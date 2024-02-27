@@ -15,6 +15,9 @@
 		0C9B59922B8D920A0019C558 /* AssessmentChartTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B59912B8D920A0019C558 /* AssessmentChartTests.swift */; };
 		0C9B599C2B8D920A0019C558 /* AssessmentChartUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B599B2B8D920A0019C558 /* AssessmentChartUITests.swift */; };
 		0C9B599E2B8D920A0019C558 /* AssessmentChartUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B599D2B8D920A0019C558 /* AssessmentChartUITestsLaunchTests.swift */; };
+		0C9B59AB2B8DB23D0019C558 /* MainTBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B59AA2B8DB23D0019C558 /* MainTBC.swift */; };
+		0C9B59B02B8DC4580019C558 /* MainNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B59AF2B8DC4580019C558 /* MainNC.swift */; };
+		0C9B59B32B8DC87D0019C558 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0C9B59B22B8DC87D0019C558 /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +50,8 @@
 		0C9B59972B8D920A0019C558 /* AssessmentChartUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AssessmentChartUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C9B599B2B8D920A0019C558 /* AssessmentChartUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssessmentChartUITests.swift; sourceTree = "<group>"; };
 		0C9B599D2B8D920A0019C558 /* AssessmentChartUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssessmentChartUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		0C9B59AA2B8DB23D0019C558 /* MainTBC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTBC.swift; sourceTree = "<group>"; };
+		0C9B59AF2B8DC4580019C558 /* MainNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C9B59B32B8DC87D0019C558 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,9 +103,9 @@
 		0C9B59792B8D92090019C558 /* AssessmentChart */ = {
 			isa = PBXGroup;
 			children = (
+				0C9B59AC2B8DC18B0019C558 /* View */,
 				0C9B597A2B8D92090019C558 /* AppDelegate.swift */,
 				0C9B597C2B8D92090019C558 /* SceneDelegate.swift */,
-				0C9B597E2B8D92090019C558 /* MainView.swift */,
 				0C9B59832B8D920A0019C558 /* Assets.xcassets */,
 				0C9B59852B8D920A0019C558 /* LaunchScreen.storyboard */,
 				0C9B59882B8D920A0019C558 /* Info.plist */,
@@ -124,6 +130,16 @@
 			path = AssessmentChartUITests;
 			sourceTree = "<group>";
 		};
+		0C9B59AC2B8DC18B0019C558 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0C9B597E2B8D92090019C558 /* MainView.swift */,
+				0C9B59AA2B8DB23D0019C558 /* MainTBC.swift */,
+				0C9B59AF2B8DC4580019C558 /* MainNC.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -140,6 +156,9 @@
 			dependencies = (
 			);
 			name = AssessmentChart;
+			packageProductDependencies = (
+				0C9B59B22B8DC87D0019C558 /* SnapKit */,
+			);
 			productName = AssessmentChart;
 			productReference = 0C9B59772B8D92090019C558 /* AssessmentChart.app */;
 			productType = "com.apple.product-type.application";
@@ -212,6 +231,9 @@
 				Base,
 			);
 			mainGroup = 0C9B596E2B8D92090019C558;
+			packageReferences = (
+				0C9B59B12B8DC87D0019C558 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 0C9B59782B8D92090019C558 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -256,6 +278,8 @@
 			files = (
 				0C9B597F2B8D92090019C558 /* MainView.swift in Sources */,
 				0C9B597B2B8D92090019C558 /* AppDelegate.swift in Sources */,
+				0C9B59AB2B8DB23D0019C558 /* MainTBC.swift in Sources */,
+				0C9B59B02B8DC4580019C558 /* MainNC.swift in Sources */,
 				0C9B597D2B8D92090019C558 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -588,6 +612,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0C9B59B12B8DC87D0019C558 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0C9B59B22B8DC87D0019C558 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C9B59B12B8DC87D0019C558 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0C9B596F2B8D92090019C558 /* Project object */;
 }
