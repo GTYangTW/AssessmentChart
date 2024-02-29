@@ -6,15 +6,20 @@
 //
 
 import UIKit
+import SnapKit
 
 class MainView: UIViewController {
-
+    let mainScrollview = UIScrollView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        mainScrollview.delegate = self
         view.backgroundColor = .white
         // Do any additional setup after loading the view.
     }
 
-
 }
 
+extension MainView: UIScrollViewDelegate{
+    
+}

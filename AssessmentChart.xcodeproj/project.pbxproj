@@ -18,6 +18,9 @@
 		0C9B59AB2B8DB23D0019C558 /* MainTBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B59AA2B8DB23D0019C558 /* MainTBC.swift */; };
 		0C9B59B02B8DC4580019C558 /* MainNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B59AF2B8DC4580019C558 /* MainNC.swift */; };
 		0C9B59B32B8DC87D0019C558 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0C9B59B22B8DC87D0019C558 /* SnapKit */; };
+		0C9B59B52B902F6F0019C558 /* MainPGVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B59B42B902F6F0019C558 /* MainPGVC.swift */; };
+		0C9B59B72B9059DD0019C558 /* ButtonUnderLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B59B62B9059DD0019C558 /* ButtonUnderLine.swift */; };
+		0C9B59B92B906C900019C558 /* ColorBlockLegend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B59B82B906C900019C558 /* ColorBlockLegend.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +55,9 @@
 		0C9B599D2B8D920A0019C558 /* AssessmentChartUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssessmentChartUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		0C9B59AA2B8DB23D0019C558 /* MainTBC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTBC.swift; sourceTree = "<group>"; };
 		0C9B59AF2B8DC4580019C558 /* MainNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNC.swift; sourceTree = "<group>"; };
+		0C9B59B42B902F6F0019C558 /* MainPGVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPGVC.swift; sourceTree = "<group>"; };
+		0C9B59B62B9059DD0019C558 /* ButtonUnderLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonUnderLine.swift; sourceTree = "<group>"; };
+		0C9B59B82B906C900019C558 /* ColorBlockLegend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorBlockLegend.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,9 +139,12 @@
 		0C9B59AC2B8DC18B0019C558 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				0C9B597E2B8D92090019C558 /* MainView.swift */,
 				0C9B59AA2B8DB23D0019C558 /* MainTBC.swift */,
 				0C9B59AF2B8DC4580019C558 /* MainNC.swift */,
+				0C9B59B42B902F6F0019C558 /* MainPGVC.swift */,
+				0C9B597E2B8D92090019C558 /* MainView.swift */,
+				0C9B59B62B9059DD0019C558 /* ButtonUnderLine.swift */,
+				0C9B59B82B906C900019C558 /* ColorBlockLegend.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -278,8 +287,11 @@
 			files = (
 				0C9B597F2B8D92090019C558 /* MainView.swift in Sources */,
 				0C9B597B2B8D92090019C558 /* AppDelegate.swift in Sources */,
+				0C9B59B92B906C900019C558 /* ColorBlockLegend.swift in Sources */,
 				0C9B59AB2B8DB23D0019C558 /* MainTBC.swift in Sources */,
+				0C9B59B72B9059DD0019C558 /* ButtonUnderLine.swift in Sources */,
 				0C9B59B02B8DC4580019C558 /* MainNC.swift in Sources */,
+				0C9B59B52B902F6F0019C558 /* MainPGVC.swift in Sources */,
 				0C9B597D2B8D92090019C558 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
