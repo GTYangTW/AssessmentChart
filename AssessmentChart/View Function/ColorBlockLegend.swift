@@ -12,24 +12,23 @@ class ColorBlockLegend: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupView(color)
+        setupView()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setupView(color)
+        setupView()
     }
     convenience init(frame: CGRect, color: CGColor) {
          self.init(frame: frame)
          self.color = color
-         setupView(color)
+         setupView()
      }
     
-    private func setupView(_ color: CGColor) {
+    private func setupView() {
         layer.backgroundColor = color
-        layer.cornerRadius = self.layer.borderWidth / 4
+        layer.cornerRadius = 10
         layer.borderWidth = 0.1
-        layer.borderColor = UIColor.black.cgColor
         layer.masksToBounds = true
     }
 }

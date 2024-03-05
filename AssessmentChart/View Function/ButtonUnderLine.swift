@@ -10,13 +10,14 @@ import UIKit
 
 class ButtonUnderLine: UIView {
     weak var tappedBtn: UIButton?
+    let color = ColorReferance()
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         guard let button = tappedBtn,
               let context = UIGraphicsGetCurrentContext() else {
             return
         }
-        context.setStrokeColor(UIColor.systemPink.cgColor)
+        context.setStrokeColor(color.customBlue.cgColor)
         context.setLineWidth(button.bounds.width)
         let startPoint = button.convert(CGPoint.zero, to: self)
         context.move(to: CGPoint(x: 0, y: 0))
