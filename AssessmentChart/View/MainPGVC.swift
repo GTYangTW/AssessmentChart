@@ -84,11 +84,11 @@ class MainPGVC: UIPageViewController {
         if let index = arrayBtn.firstIndex(of: sender){
             switch index {
             case 0:
-                direction = NavigationDirection.forward
-            case 1:
                 direction = NavigationDirection.reverse
-            default:
+            case 1:
                 direction = NavigationDirection.forward
+            default:
+                direction = NavigationDirection.reverse
             }
             //pagecontrol 跳轉頁面控制功能，直接跳頁數
             setViewControllers([arrayVC[index]], direction: direction, animated: true, completion: nil)
@@ -171,6 +171,7 @@ extension MainPGVC : UIPageViewControllerDataSource, UIPageViewControllerDelegat
         }
         switch currentIndex{
         case 0:
+            markPageButton(arrayBtn[1])
             return arrayVC[1]
         case 1:
             return nil
@@ -184,11 +185,18 @@ extension MainPGVC : UIPageViewControllerDataSource, UIPageViewControllerDelegat
         }
         switch currentIndex{
         case 0:
+            markPageButton(arrayBtn[1])
             return arrayVC[1]
         case 1:
             return nil
         default:
             return nil
         }
+    }
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        guard completed,
+              let viewController = pageViewController.viewControllers?.first,
+              let index = arrayVC.firstIndex(of: viewController) else { return }
+        markPageButton(arrayBtn[index])
     }
 }
