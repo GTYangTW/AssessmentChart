@@ -8,18 +8,15 @@
 import UIKit
 
 class MainPGVC: UIPageViewController {
-    let viewChart = {
-        let vc = UIViewController()
-        return vc
-    }()
     let viewAlarm = {
         let vc = UIViewController()
         vc.view.backgroundColor = .yellow
         return vc
     }()
+    let mainVC = MainView()
     var arrayVC : [UIViewController]{
         var viewControllers = [UIViewController]()
-        viewControllers.append(viewChart)
+        viewControllers.append(mainVC)
         viewControllers.append(viewAlarm)
         return viewControllers
     }
@@ -34,7 +31,6 @@ class MainPGVC: UIPageViewController {
         return btn
     }
     lazy var uvDiscription = BorderWithLeftBold(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 10, height: 100), color: color.customYellow)
-    
     let color = ColorReferance()
     lazy var arrayBtn : [UIButton] = [btn1, btn2]
     let svBtn = UIStackView()
@@ -55,12 +51,12 @@ class MainPGVC: UIPageViewController {
         delegate = self
         
         setViewControllers([arrayVC[0]], direction: .forward, animated: true, completion: nil)
-        view.isUserInteractionEnabled = true
-        viewChart.view.isUserInteractionEnabled = true
+
         setupStackBtn()
         setupDescription()
         // Do any additional setup after loading the view.
     }
+    // PageView 也能設置 constraint 但是會因為畫面切換，導致 constraint 重新計算，再創 PageView 實體的類別設置 constraint 才對
     func setupStackBtn() {
         view.addSubview(svBtn)
         svBtn.axis = .horizontal
@@ -72,6 +68,7 @@ class MainPGVC: UIPageViewController {
             button.addTarget(self, action: #selector(tappedBtn), for: .touchUpInside)
             svBtn.addArrangedSubview(button)
         }
+        markPageButton(arrayBtn[0])
         svBtn.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
             make.centerX.equalToSuperview()
@@ -82,6 +79,22 @@ class MainPGVC: UIPageViewController {
     @objc
     func tappedBtn(_ sender: UIButton) {
         //print("Sender")
+        markPageButton(sender)
+        var direction = NavigationDirection.forward
+        if let index = arrayBtn.firstIndex(of: sender){
+            switch index {
+            case 0:
+                direction = NavigationDirection.forward
+            case 1:
+                direction = NavigationDirection.reverse
+            default:
+                direction = NavigationDirection.forward
+            }
+            //pagecontrol 跳轉頁面控制功能，直接跳頁數
+            setViewControllers([arrayVC[index]], direction: direction, animated: true, completion: nil)
+        }
+    }
+    func markPageButton(_ sender: UIButton){
         for btn in arrayBtn {
             btn.isSelected = false
         }
@@ -116,9 +129,9 @@ class MainPGVC: UIPageViewController {
         }()
         uvDiscription.addSubview(lbDiscription)
         uvDiscription.addSubview(lbSubdiscription)
-        viewChart.view.addSubview(uvDiscription)
+        mainVC.view.addSubview(uvDiscription)
         uvDiscription.snp.makeConstraints { make in
-            make.top.equalTo(self.svBtn.snp.bottomMargin)
+            make.top.equalTo(mainVC.view.snp.top).offset(90)
             make.left.right.equalToSuperview()
             make.height.equalTo(100)
         }
@@ -131,78 +144,7 @@ class MainPGVC: UIPageViewController {
             make.left.right.equalToSuperview().offset(15)
             make.height.lessThanOrEqualTo(50)
         }
-        /*
-        viewChart.view.addSubview(svLegend)
-        let lb1 = "未發包工程"
-        let lb2 = "完工驗收中工程"
-        let lb3 = "結案"
-        let lb4 = "在建工程"
-        let lb5 = "保固工程"
-        let lb6 = ""
-        let block1 = ColorBlockLegend(frame: CGRect(x: 0, y: 0, width: 40, height: labelSize(label: lbDiscription).height), color: CGColor(red: 1, green: 1, blue: 1, alpha: 1.0))
-        let block2 = ColorBlockLegend(frame: CGRect(x: 0, y: 0, width: 40, height: labelSize(label: lbDiscription).height), color: CGColor(red: 1, green: 1, blue: 1, alpha: 1.0))
-        let block3 = ColorBlockLegend(frame: CGRect(x: 0, y: 0, width: 40, height: labelSize(label: lbDiscription).height), color: CGColor(red: 1, green: 1, blue: 1, alpha: 1.0))
-        let block4 = ColorBlockLegend(frame: CGRect(x: 0, y: 0, width: 40, height: labelSize(label: lbDiscription).height), color: CGColor(red: 1, green: 1, blue: 1, alpha: 1.0))
-        let block5 = ColorBlockLegend(frame: CGRect(x: 0, y: 0, width: 40, height: labelSize(label: lbDiscription).height), color: CGColor(red: 1, green: 1, blue: 1, alpha: 1.0))
-        let block6 = UIView()
-        
-        let arrayBlock1 = [block1, block2, block3]
-        let arrayBlock2 = [block4, block5, block6]
-        let sv1: [String] = [lb1, lb2, lb3]
-        let sv2: [String] = [lb4, lb5, lb6]
-        let arrayLb1 = stringToArray(strings: sv1)
-        let arrayLb2 = stringToArray(strings: sv2)
-        
-        let svLeft1 = createVerticalStackView(arrangedSubviews: arrayBlock1)
-        let svLeft3 = createVerticalStackView(arrangedSubviews: arrayBlock2)
-        let svLeft2 = createVerticalStackView(arrangedSubviews: arrayLb1)
-        let svLeft4 = createVerticalStackView(arrangedSubviews: arrayLb2)
-        
-        let svLeft = createHorizontalStackView(arrangedSubviews: [svLeft1, svLeft2])
-        let svRight = createHorizontalStackView(arrangedSubviews: [svLeft3, svLeft4])
-        
-        let svAll = createHorizontalStackView(arrangedSubviews: [svLeft, svRight])
-        
-        svLegend.addSubview(svAll)
-        svAll.snp.makeConstraints { make in
-            make.top.centerX.equalToSuperview()
-            make.width.lessThanOrEqualTo(svLegend.snp.width)
-        }
-        svLegend.snp.makeConstraints { make in
-            make.top.equalTo(self.uvDiscription.snp.bottom)
-            make.left.right.bottom.equalToSuperview()
-        }
-         */
     }
-    /*
-    func createVerticalStackView(arrangedSubviews: [UIView]) -> UIStackView {
-        let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
-        stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        stackView.spacing = 10
-        return stackView
-    }
-    
-    func createHorizontalStackView(arrangedSubviews: [UIView]) -> UIStackView {
-        let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
-        stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
-        stackView.spacing = 10
-        return stackView
-    }
-    
-    func stringToArray(strings: [String]) -> [UILabel]{
-        var arrayTemp = [UILabel]()
-        for string in strings{
-            let lbtemp = UILabel()
-            lbtemp.font = UIFont(name: "NotoSansTC-Regular", size: 10)
-            lbtemp.text = string
-            lbtemp.numberOfLines = 1
-            arrayTemp.append(lbtemp)
-        }
-        return arrayTemp
-    }
-     */
     func labelSize(label: UILabel) -> CGSize {
         let labelWidth = view.frame.width - 40
         let maxSize = CGSize(width: labelWidth, height: CGFloat.greatestFiniteMagnitude)

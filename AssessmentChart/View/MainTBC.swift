@@ -12,7 +12,7 @@ class MainTBC: UITabBarController{
     // 創建 mainPGVC 實體，再加到 TabbarController 中，使用 addChild(<VC>) 方法。
     let mainPGVC = MainPGVC()
     private var mainView = {
-        let vc = MainView()
+        let vc = UIViewController()
         vc.tabBarItem.image = UIImage(systemName: "doc.text")
         vc.view.backgroundColor = .white
         vc.tabBarItem.title = "儀錶板"
@@ -74,6 +74,7 @@ class MainTBC: UITabBarController{
         mainPGVC.view.snp.makeConstraints { make in
             make.left.right.equalTo(view.safeAreaLayoutGuide)
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset( -self.tabBar.frame.size.height )
+            // 這邊設置頂板後，PageView 的 button 就無法超出邊界了
             make.top.equalTo(lbTitle.snp.bottom)
         }
     }
