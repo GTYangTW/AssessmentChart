@@ -74,7 +74,6 @@ class MainPGVC: UIPageViewController {
     }
     @objc
     func tappedBtn(_ sender: UIButton) {
-        //print("Sender")
         markPageButton(sender)
         var direction = NavigationDirection.forward
         if let index = arrayBtn.firstIndex(of: sender){
@@ -129,7 +128,6 @@ extension MainPGVC : UIPageViewControllerDataSource, UIPageViewControllerDelegat
         }
         switch currentIndex{
         case 0:
-            markPageButton(arrayBtn[1])
             return arrayVC[1]
         case 1:
             return nil
@@ -143,7 +141,6 @@ extension MainPGVC : UIPageViewControllerDataSource, UIPageViewControllerDelegat
         }
         switch currentIndex{
         case 0:
-            markPageButton(arrayBtn[1])
             return arrayVC[1]
         case 1:
             return nil

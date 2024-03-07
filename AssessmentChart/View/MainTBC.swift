@@ -5,6 +5,7 @@
 //  Created by 10362 on 2024/2/27.
 //
 // MainTBC（下、儀表板） + MainNC(上、Logo) ->  MainPGVC（svbutton） -> viewChartVC ( svLegend + chart)
+// 畫面製作的先後順序？？
 
 import UIKit
 

@@ -46,39 +46,33 @@ func setupDescription(){
     }
     
  */
-
-class LegendView {
-    let view = UIView()
-    let textLabel: UILabel = {
+// 創造類別的內容
+class LegendViewBlock: UIView {
+    private let view = UIView()
+    private let textLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         return label
     }()
+    let colorBlock = UIView()
     
-    let colorView: UIView = {
-        let view = UIView()
-        return view
-    }()
-    let colorBlockLegend = ColorBlockLegend()
-    init(text: String, color: UIColor) {
+    init(frame: CGRect = CGRect(x: 0, y: 0, width: 120, height: 60), text: String, color: UIColor) {
+        super.init(frame: frame)
         textLabel.text = text
-        
-        colorBlockLegend.color = color.cgColor
-//        colorView.backgroundColor = color
-        view.addSubview(textLabel)
-        view.addSubview(colorView)
-        textLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.left.equalTo(colorView.snp.right).offset(8)
+        setupBlock(frame: frame, color: color)
+    }
+    // UIView 本身就是 View，則無 View 屬性
+    func setupBlock(frame: CGRect, color: UIColor){
+        colorBlock.backgroundColor = color
+        addSubview(textLabel)
+        addSubview(colorBlock)
+        self.textLabel.snp.makeConstraints { make in
+            make.left.equalTo(colorBlock.snp.right).offset(8)
+            make.top.equalToSuperview().offset(10)
             make.right.lessThanOrEqualToSuperview()
         }
-//        colorView.snp.makeConstraints { make in
-//            make.centerY.equalToSuperview()
-//            make.left.equalToSuperview()
-//            make.width.height.equalTo(20)
-//        }
-        colorBlockLegend.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
+        colorBlock.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(10)
             make.left.equalToSuperview()
             make.width.height.equalTo(20)
         }
@@ -129,21 +123,7 @@ class LegendView {
         make.left.right.bottom.equalToSuperview()
     }
      */
-    func createVerticalStackView(arrangedSubviews: [UIView]) -> UIStackView {
-        let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
-        stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        stackView.spacing = 10
-        return stackView
-    }
     
-    func createHorizontalStackView(arrangedSubviews: [UIView]) -> UIStackView {
-        let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
-        stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
-        stackView.spacing = 10
-        return stackView
-    }
     
     func stringToArray(strings: [String]) -> [UILabel]{
         var arrayTemp = [UILabel]()

@@ -8,8 +8,8 @@
 import UIKit
 
 class BorderWithLeftBold: UIView {
-    private var upperView: UIView!
     private var lowerView: UIView!
+    private var upperView: UIView!
     private let shiftX: CGFloat = 5
     
     init(frame: CGRect, color: UIColor) {
@@ -22,18 +22,18 @@ class BorderWithLeftBold: UIView {
     }
     
     private func createview(color: UIColor){
-        upperView = UIView(frame: CGRect(x: shiftX, y: 0, width: frame.size.width, height: frame.size.height))
-        upperView.backgroundColor = color
-        lowerView = UIView(frame: CGRect(x: upperView.frame.origin.x + 10,
-                                         y: upperView.frame.origin.y + 2,
-                                         width: upperView.frame.size.width - 12,
-                                         height: upperView.frame.size.height - 4
+        lowerView = UIView(frame: CGRect(x: shiftX, y: 0, width: frame.size.width, height: frame.size.height))
+        lowerView.backgroundColor = color
+        upperView = UIView(frame: CGRect(x: lowerView.frame.origin.x + 10,
+                                         y: lowerView.frame.origin.y + 2,
+                                         width: lowerView.frame.size.width - 12,
+                                         height: lowerView.frame.size.height - 4
                                         ))
-        lowerView.layer.cornerRadius = 10
         upperView.layer.cornerRadius = 10
-        lowerView.backgroundColor = .white
+        lowerView.layer.cornerRadius = 10
+        upperView.backgroundColor = .white
         
-        addSubview(upperView)
         addSubview(lowerView)
+        addSubview(upperView)
     }
 }
