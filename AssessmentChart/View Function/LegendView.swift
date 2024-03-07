@@ -81,50 +81,6 @@ class LegendViewBlock: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    /*
-    view.addSubview(svLegend)
-    let lb1 = "未發包工程"
-    let lb2 = "完工驗收中工程"
-    let lb3 = "結案"
-    let lb4 = "在建工程"
-    let lb5 = "保固工程"
-    let lb6 = ""
-    let block1 = ColorBlockLegend(frame: CGRect(x: 0, y: 0, width: 40, height: labelSize(label: lbDiscription).height), color: CGColor(red: 1, green: 1, blue: 1, alpha: 1.0))
-    let block2 = ColorBlockLegend(frame: CGRect(x: 0, y: 0, width: 40, height: labelSize(label: lbDiscription).height), color: CGColor(red: 1, green: 1, blue: 1, alpha: 1.0))
-    let block3 = ColorBlockLegend(frame: CGRect(x: 0, y: 0, width: 40, height: labelSize(label: lbDiscription).height), color: CGColor(red: 1, green: 1, blue: 1, alpha: 1.0))
-    let block4 = ColorBlockLegend(frame: CGRect(x: 0, y: 0, width: 40, height: labelSize(label: lbDiscription).height), color: CGColor(red: 1, green: 1, blue: 1, alpha: 1.0))
-    let block5 = ColorBlockLegend(frame: CGRect(x: 0, y: 0, width: 40, height: labelSize(label: lbDiscription).height), color: CGColor(red: 1, green: 1, blue: 1, alpha: 1.0))
-    let block6 = UIView()
-    
-    let arrayBlock1 = [block1, block2, block3]
-    let arrayBlock2 = [block4, block5, block6]
-    let sv1: [String] = [lb1, lb2, lb3]
-    let sv2: [String] = [lb4, lb5, lb6]
-    let arrayLb1 = stringToArray(strings: sv1)
-    let arrayLb2 = stringToArray(strings: sv2)
-    
-    let svLeft1 = createVerticalStackView(arrangedSubviews: arrayBlock1)
-    let svLeft3 = createVerticalStackView(arrangedSubviews: arrayBlock2)
-    let svLeft2 = createVerticalStackView(arrangedSubviews: arrayLb1)
-    let svLeft4 = createVerticalStackView(arrangedSubviews: arrayLb2)
-    
-    let svLeft = createHorizontalStackView(arrangedSubviews: [svLeft1, svLeft2])
-    let svRight = createHorizontalStackView(arrangedSubviews: [svLeft3, svLeft4])
-    
-    let svAll = createHorizontalStackView(arrangedSubviews: [svLeft, svRight])
-    
-    svLegend.addSubview(svAll)
-    svAll.snp.makeConstraints { make in
-        make.top.centerX.equalToSuperview()
-        make.width.lessThanOrEqualTo(svLegend.snp.width)
-    }
-    svLegend.snp.makeConstraints { make in
-        make.top.equalTo(self.uvDiscription.snp.bottom)
-        make.left.right.bottom.equalToSuperview()
-    }
-     */
-    
-    
     func stringToArray(strings: [String]) -> [UILabel]{
         var arrayTemp = [UILabel]()
         for string in strings{

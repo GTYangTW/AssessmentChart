@@ -20,6 +20,7 @@ class MainView: UIViewController {
     lazy var legendBlock3 = LegendViewBlock(text: "保固中工程", color: color.customRed)
     lazy var legendBlock4 = LegendViewBlock(text: "結案（保固期滿）", color: color.customBlue)
     lazy var arrayLegend: [LegendViewBlock] = [legendBlock, legendBlock1, legendBlock2, legendBlock3, legendBlock4]
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -35,8 +36,21 @@ class MainView: UIViewController {
         // Do any additional setup after loading the view.
         setupDescription()
         setupLegend()
+        setuplbTitle()
     }
+    func setuplbTitle() {
+        let lbTitleChart = UILabel()
+        lbTitleChart.text = "工程標案依工程狀態統計"
+        lbTitleChart.font = UIFont.boldSystemFont(ofSize: 20)
+        view.addSubview(lbTitleChart)
+        lbTitleChart.snp.makeConstraints { make in
+            make.top.equalTo(svLegend.snp.bottom).offset(50)
+            make.left.right.equalToSuperview().inset(10)
+        }
+    }
+    
     // frame 與 constranint 先後順序？？
+    //TODO: Check height
     func setupLegend() {
         let svSpilt = splitArrayToStackview(array: arrayLegend)
         svLegend.addArrangedSubview(svSpilt)
@@ -44,11 +58,12 @@ class MainView: UIViewController {
         legendDiscription.addSubview(svLegend)
         svLegend.snp.makeConstraints { make in
             make.top.right.left.equalToSuperview()
+            make.height.equalTo(svSpilt.snp.height).offset(10)
         }
         legendDiscription.snp.makeConstraints { make in
             make.top.equalTo(uvDiscription.snp.bottom).offset(10)
             make.left.right.equalToSuperview().inset(10)
-            make.height.equalTo(svSpilt.snp.height)
+            make.bottom.equalTo(svLegend.snp.bottom).offset(10)
         }
     }
     func splitArrayToStackview(array: [UIView]) -> UIStackView {

@@ -24,6 +24,7 @@
 		0C9B5A002B91C2FA0019C558 /* BorderWithLeftBold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B59FF2B91C2FA0019C558 /* BorderWithLeftBold.swift */; };
 		0CBF63C52B95A86B00CA02FF /* LegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBF63C42B95A86B00CA02FF /* LegendView.swift */; };
 		0CBF63C82B96ED6800CA02FF /* ColorReferance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBF63C72B96ED6800CA02FF /* ColorReferance.swift */; };
+		0CBF63CB2B9997C100CA02FF /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBF63CA2B9997C100CA02FF /* Presenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		0C9B59FF2B91C2FA0019C558 /* BorderWithLeftBold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderWithLeftBold.swift; sourceTree = "<group>"; };
 		0CBF63C42B95A86B00CA02FF /* LegendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegendView.swift; sourceTree = "<group>"; };
 		0CBF63C72B96ED6800CA02FF /* ColorReferance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorReferance.swift; sourceTree = "<group>"; };
+		0CBF63CA2B9997C100CA02FF /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +152,7 @@
 				0C9B59AF2B8DC4580019C558 /* MainNC.swift */,
 				0C9B59B42B902F6F0019C558 /* MainPGVC.swift */,
 				0C9B597E2B8D92090019C558 /* MainView.swift */,
+				0CBF63CA2B9997C100CA02FF /* Presenter.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -308,6 +311,7 @@
 				0CBF63C52B95A86B00CA02FF /* LegendView.swift in Sources */,
 				0C9B59B92B906C900019C558 /* ColorBlockLegend.swift in Sources */,
 				0C9B59AB2B8DB23D0019C558 /* MainTBC.swift in Sources */,
+				0CBF63CB2B9997C100CA02FF /* Presenter.swift in Sources */,
 				0C9B59B72B9059DD0019C558 /* ButtonUnderLine.swift in Sources */,
 				0C9B59B02B8DC4580019C558 /* MainNC.swift in Sources */,
 				0CBF63C82B96ED6800CA02FF /* ColorReferance.swift in Sources */,
