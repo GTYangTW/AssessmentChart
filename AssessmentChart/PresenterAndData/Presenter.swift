@@ -8,7 +8,7 @@
 import Foundation
 
 class ChartPresenter{
-    weak var mainView: ChartDataProtocol?
+    private weak var mainView: ChartDataProtocol?
     
     init(mainView: ChartDataProtocol? = nil) {
         self.mainView = mainView

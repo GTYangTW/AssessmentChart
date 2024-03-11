@@ -10,25 +10,31 @@ import SnapKit
 import DGCharts
 
 class MainView: UIViewController {
-    let mainScrollview = UIScrollView()
+    private let mainScrollview = UIScrollView()
     lazy var uvDiscription = BorderWithLeftBold(frame: CGRect(x: 0, y: 0, width: view.safeAreaLayoutGuide.layoutFrame.width * 0.9, height: 100), color: color.customYellow)
-    var color: ColorReferance!
-    let svLegend = UIStackView()
-    let legendDiscription = UIView()
-    lazy var legendBlock = LegendViewBlock(text: "未發包工程", color: .darkGray)
-    lazy var legendBlock1 = LegendViewBlock(text: "在建工程", color: color.customYellow)
-    lazy var legendBlock2 = LegendViewBlock(text: "完工驗收中工程", color: color.customGreen)
-    lazy var legendBlock3 = LegendViewBlock(text: "保固中工程", color: color.customRed)
-    lazy var legendBlock4 = LegendViewBlock(text: "結案（保固期滿）", color: color.customBlue)
-    lazy var arrayLegend: [LegendViewBlock] = [legendBlock, legendBlock1, legendBlock2, legendBlock3, legendBlock4]
+    private var color: ColorReferance!
+    private let svLegend = UIStackView()
+    private let legendDiscription = UIView()
+    private lazy var legendBlock = LegendViewBlock(text: "未發包工程", color: .darkGray)
+    private lazy var legendBlock1 = LegendViewBlock(text: "在建工程", color: color.customYellow)
+    private lazy var legendBlock2 = LegendViewBlock(text: "完工驗收中工程", color: color.customGreen)
+    private lazy var legendBlock3 = LegendViewBlock(text: "保固中工程", color: color.customRed)
+    private lazy var legendBlock4 = LegendViewBlock(text: "結案（保固期滿）", color: color.customBlue)
+    private lazy var arrayLegend: [LegendViewBlock] = [legendBlock, legendBlock1, legendBlock2, legendBlock3, legendBlock4]
     
-    var chartData: [Page]!
+    private var chartData: [Page]!
     lazy var presenter = ChartPresenter(mainView: self)
     
-    let lbTitleChart = UILabel()
-    var barChart = BarChartView()
+    private let lbTitleChart = UILabel()
+    private var barChart = BarChartView()
     
-    let mainScrollView = UIScrollView()
+    private var lbDataDateRange : UILabel = {
+        let label = UILabel()
+        label.text = "統計區間"
+        label.textColor = .gray
+        label.font = UIFont.boldSystemFont(ofSize: 12)
+        return label
+    }()
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -176,6 +182,7 @@ class MainView: UIViewController {
             make.centerX.equalToSuperview()
             make.height.width.equalTo(frameWidth)
         }
+        setupDataDateRange()
     }
     // TODO: 三元運算子修正
     func importCharData(data: [Page]) {
@@ -201,11 +208,11 @@ class MainView: UIViewController {
         var tempX = [Double]()
         var tempY = [Double]()
         for (keys, values) in dictForChart {
-            print("Values:\(values)")
+            //print("Values:\(values)")
             for (key , value) in values {
                 tempX.append(Double(key))
                 tempY.append(values[key] ?? 0)
-                print("Value:\(value)")
+                //print("Value:\(value)")
             }
         }
         for i in 0..<dictForChart.count {
@@ -215,10 +222,46 @@ class MainView: UIViewController {
         
         barChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: Array(dictForChart.keys))
 //        barChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: plate)
-        let set = BarChartDataSet(entries: entries)
+        let set = BarChartDataSet(entries: entries, label: "圖例")
         set.colors = ChartColorTemplates.colorful()
         let data = BarChartData(dataSet: set)
         barChart.data = data
+    }
+    func setupDataDateRange(){
+        let dateFormatterMin = DateFormatter()
+        dateFormatterMin.dateFormat = "yyyy-MM-dd"
+        let dateFormatterMax = DateFormatter()
+        dateFormatterMax.dateFormat = "yyyy-MM-dd HH:mm"
+        
+        let dateRange = calculateDateRange()
+        mainScrollview.addSubview(lbDataDateRange)
+        guard let dateMin = dateRange["min"],
+              let dateMax = dateRange["max"] else { return }
+        let dateStringMin = dateFormatterMin.string(from: dateMin)
+        let dateStringMax = dateFormatterMax.string(from: dateMax)
+        lbDataDateRange.text = "統計區間：\(dateStringMin)至\(dateStringMax)"
+        let width = (lbDataDateRange.text?.width(withConstrainedHeight: 12, font: lbDataDateRange.font))! + 5
+        lbDataDateRange.snp.makeConstraints { make in
+            make.top.equalTo(barChart.snp.bottom)
+            make.right.equalTo(barChart.snp.right)
+            make.width.equalTo(width).priority(.required)
+        }
+    }
+    
+    func calculateDateRange() -> [String: Date]{
+        var dictTemp = [String: Date]()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        
+        let date = chartData.compactMap { item in
+            return dateFormatter.date(from: item.cDate)
+            //print("isonDate:\(formatterDate)") // 印出轉換後的 Date 對象
+        }
+        //print(date)
+        dictTemp["min"] = date.min()
+        dictTemp["max"] = date.max()
+        return dictTemp
     }
     
     // 計算總數
@@ -261,4 +304,11 @@ extension MainView: ChartDataProtocol{
 
 extension MainView: ChartViewDelegate{
     
+}
+extension String {
+    func width(withConstrainedHeight height: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: .greatestFiniteMagnitude, height: height)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
+        return ceil(boundingBox.width)
+    }
 }
