@@ -11,7 +11,7 @@ import DGCharts
 
 class MainView: UIViewController {
     let mainScrollview = UIScrollView()
-    lazy var uvDiscription = BorderWithLeftBold(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 10, height: 100), color: color.customYellow)
+    lazy var uvDiscription = BorderWithLeftBold(frame: CGRect(x: 0, y: 0, width: view.safeAreaLayoutGuide.layoutFrame.width * 0.9, height: 100), color: color.customYellow)
     var color: ColorReferance!
     let svLegend = UIStackView()
     let legendDiscription = UIView()
@@ -28,11 +28,7 @@ class MainView: UIViewController {
     let lbTitleChart = UILabel()
     var barChart = BarChartView()
     
-    let scrollView = {
-        let view = UIScrollView()
-        view.contentSize = CGSize(width: view.bounds.width, height: 600)
-        return view
-    }
+    let mainScrollView = UIScrollView()
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -48,20 +44,33 @@ class MainView: UIViewController {
         barChart.delegate = self
         view.backgroundColor = .white
         // Do any additional setup after loading the view.
+        setupScrollView()
         setupDescription()
         setupLegend()
         setuplbTitle()
         presenter.getJSON()
         setupChart()
-        
+//        uvDiscription.isUserInteractionEnabled = true
+//        mainScrollview.isUserInteractionEnabled = true
+//        mainScrollview.delaysContentTouches = true
+    }
+    func setupScrollView() {
+        view.addSubview(mainScrollview)
+        //mainScrollview.backgroundColor = .green
+        mainScrollview.snp.makeConstraints { make in
+            // ScrollView 需要設置 content size 與 constraints
+            make.right.left.bottom.equalToSuperview()
+            make.top.equalToSuperview().inset(70)
+        }
+        mainScrollview.contentSize = CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width, height: 800)
     }
     func setuplbTitle() {
         lbTitleChart.text = "工程標案依工程狀態統計"
         lbTitleChart.font = UIFont.boldSystemFont(ofSize: 20)
-        view.addSubview(lbTitleChart)
+        mainScrollview.addSubview(lbTitleChart)
         lbTitleChart.snp.makeConstraints { make in
             make.top.equalTo(svLegend.snp.bottom).offset(50)
-            make.left.right.equalToSuperview().inset(10)
+            make.left.equalToSuperview().inset(10)
         }
     }
     
@@ -70,7 +79,7 @@ class MainView: UIViewController {
     func setupLegend() {
         let svSpilt = splitArrayToStackview(array: arrayLegend)
         svLegend.addArrangedSubview(svSpilt)
-        view.addSubview(legendDiscription)
+        mainScrollview.addSubview(legendDiscription)
         legendDiscription.addSubview(svLegend)
         svLegend.snp.makeConstraints { make in
             make.top.right.left.equalToSuperview()
@@ -78,8 +87,9 @@ class MainView: UIViewController {
         }
         legendDiscription.snp.makeConstraints { make in
             make.top.equalTo(uvDiscription.snp.bottom).offset(10)
-            make.left.right.equalToSuperview().inset(10)
-            make.bottom.equalTo(svLegend.snp.bottom).offset(10)
+//            make.left.right.equalToSuperview().inset(10)
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(svLegend.snp.bottom).offset(-10)
         }
     }
     func splitArrayToStackview(array: [UIView]) -> UIStackView {
@@ -112,20 +122,23 @@ class MainView: UIViewController {
         }()
         uvDiscription.addSubview(lbDiscription)
         uvDiscription.addSubview(lbSubdiscription)
-        view.addSubview(uvDiscription)
+        mainScrollview.addSubview(uvDiscription)
         uvDiscription.snp.makeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(90)
-            make.left.right.equalToSuperview()
+            // ScrollView 貼上 UIView, 需要約束成 centerY，約束成leading、trailing、left、right 都會導致不能滑動。
+            make.top.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.width.lessThanOrEqualToSuperview()
             make.height.equalTo(100)
         }
         lbDiscription.snp.makeConstraints { make in
             make.top.left.equalToSuperview().offset(15)
-            make.right.lessThanOrEqualToSuperview().offset(15)
+//            make.right.lessThanOrEqualToSuperview().offset(15)
             make.height.equalTo(labelSize(label: lbDiscription).height)
         }
         lbSubdiscription.snp.makeConstraints { make in
             make.top.equalTo(lbDiscription.snp.bottomMargin).offset(20)
-            make.left.right.equalToSuperview().offset(15)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
             make.height.lessThanOrEqualTo(50)
         }
     }
@@ -152,15 +165,16 @@ class MainView: UIViewController {
         return stackView
     }
     func setupChart() {
+        let frameWidth = mainScrollview.snp.width
         barChart.frame = CGRect(x: 0,
                                 y: 0,
                                 width: self.view.frame.size.width,
                                 height: self.view.frame.size.width)
-        view.addSubview(barChart)
+        mainScrollview.addSubview(barChart)
         barChart.snp.makeConstraints { make in
             make.top.equalTo(lbTitleChart.snp.bottomMargin).offset(10)
-            make.left.right.equalToSuperview()
-            make.height.equalTo(view.frame.width)
+            make.centerX.equalToSuperview()
+            make.height.width.equalTo(frameWidth)
         }
     }
     // TODO: 三元運算子修正
