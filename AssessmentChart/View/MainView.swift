@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import DGCharts
 
 class MainView: UIViewController {
     let mainScrollview = UIScrollView()
@@ -21,6 +22,18 @@ class MainView: UIViewController {
     lazy var legendBlock4 = LegendViewBlock(text: "結案（保固期滿）", color: color.customBlue)
     lazy var arrayLegend: [LegendViewBlock] = [legendBlock, legendBlock1, legendBlock2, legendBlock3, legendBlock4]
     
+    var chartData: [Page]!
+    lazy var presenter = ChartPresenter(mainView: self)
+    
+    let lbTitleChart = UILabel()
+    var barChart = BarChartView()
+    
+    let scrollView = {
+        let view = UIScrollView()
+        view.contentSize = CGSize(width: view.bounds.width, height: 600)
+        return view
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -32,14 +45,17 @@ class MainView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         mainScrollview.delegate = self
+        barChart.delegate = self
         view.backgroundColor = .white
         // Do any additional setup after loading the view.
         setupDescription()
         setupLegend()
         setuplbTitle()
+        presenter.getJSON()
+        setupChart()
+        
     }
     func setuplbTitle() {
-        let lbTitleChart = UILabel()
         lbTitleChart.text = "工程標案依工程狀態統計"
         lbTitleChart.font = UIFont.boldSystemFont(ofSize: 20)
         view.addSubview(lbTitleChart)
@@ -135,6 +151,78 @@ class MainView: UIViewController {
         stackView.spacing = 10
         return stackView
     }
+    func setupChart() {
+        barChart.frame = CGRect(x: 0,
+                                y: 0,
+                                width: self.view.frame.size.width,
+                                height: self.view.frame.size.width)
+        view.addSubview(barChart)
+        barChart.snp.makeConstraints { make in
+            make.top.equalTo(lbTitleChart.snp.bottomMargin).offset(10)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(view.frame.width)
+        }
+    }
+    // TODO: 三元運算子修正
+    func importCharData(data: [Page]) {
+        var entries = [BarChartDataEntry]()
+        /*
+        for x in 0...10{
+            entries.append(BarChartDataEntry(x: Double(x),
+                                             y: Double(x)
+                                            )
+            )
+        }
+         */
+        
+        let dictForChart = calculateAliasAndStatus(datas: self.chartData)
+        /*
+        let plate = ["新工處"]
+        let arrayData: [Double] = [110.0, 100.1, 11.2, 19.3, 200.4]
+        for i in 0..<1 {
+            entries.append(BarChartDataEntry(x: Double(i), yValues: arrayData))
+        }
+         */
+        
+        var tempX = [Double]()
+        var tempY = [Double]()
+        for (keys, values) in dictForChart {
+            print("Values:\(values)")
+            for (key , value) in values {
+                tempX.append(Double(key))
+                tempY.append(values[key] ?? 0)
+                print("Value:\(value)")
+            }
+        }
+        for i in 0..<dictForChart.count {
+            entries.append(BarChartDataEntry(x: tempX[Int(i)],
+                                             yValues: tempY))
+        }
+        
+        barChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: Array(dictForChart.keys))
+//        barChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: plate)
+        let set = BarChartDataSet(entries: entries)
+        set.colors = ChartColorTemplates.colorful()
+        let data = BarChartData(dataSet: set)
+        barChart.data = data
+    }
+    
+    // 計算總數
+    func calculateAliasAndStatus(datas: [Page]) -> [String: [Int: Double]] {
+        var tempDict = [String: [Int: Double]]()
+        
+        for data in datas {
+            let alias = data.projunitAliasname
+            let status = data.projStatus
+            let value = Int(status.rawValue)
+            if tempDict.keys.contains(alias.rawValue){
+                tempDict[alias.rawValue]?[value ?? 0, default: 0] += 1
+            } else {
+                tempDict[alias.rawValue] = [value ?? 0: 0]
+            }
+        }
+        return tempDict
+    }
 }
 
 extension MainView: UIScrollViewDelegate{
@@ -144,4 +232,19 @@ extension MainView: UIScrollViewDelegate{
 enum number{
     case oddNumber
     case evenNumber
+}
+
+extension MainView: ChartDataProtocol{
+    func chartData(_ chartData: [Page]) {
+        self.chartData = chartData
+        calculateAliasAndStatus(datas: chartData)
+        //print(self.chartData)
+        DispatchQueue.main.async {
+            self.importCharData(data: chartData)
+        }
+    }
+}
+
+extension MainView: ChartViewDelegate{
+    
 }

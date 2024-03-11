@@ -25,6 +25,10 @@
 		0CBF63C52B95A86B00CA02FF /* LegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBF63C42B95A86B00CA02FF /* LegendView.swift */; };
 		0CBF63C82B96ED6800CA02FF /* ColorReferance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBF63C72B96ED6800CA02FF /* ColorReferance.swift */; };
 		0CBF63CB2B9997C100CA02FF /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBF63CA2B9997C100CA02FF /* Presenter.swift */; };
+		0CBF63CE2B9999DE00CA02FF /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBF63CD2B9999DE00CA02FF /* Data.swift */; };
+		0CBF63D12B9A94CA00CA02FF /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 0CBF63D02B9A94CA00CA02FF /* Alamofire */; };
+		0CBF63D32B9AB2B800CA02FF /* JSONData.json in Resources */ = {isa = PBXBuildFile; fileRef = 0CBF63D22B9AB06E00CA02FF /* JSONData.json */; };
+		0CBF63D62B9AB5F300CA02FF /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 0CBF63D52B9AB5F300CA02FF /* DGCharts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +70,8 @@
 		0CBF63C42B95A86B00CA02FF /* LegendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegendView.swift; sourceTree = "<group>"; };
 		0CBF63C72B96ED6800CA02FF /* ColorReferance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorReferance.swift; sourceTree = "<group>"; };
 		0CBF63CA2B9997C100CA02FF /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
+		0CBF63CD2B9999DE00CA02FF /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		0CBF63D22B9AB06E00CA02FF /* JSONData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = JSONData.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +80,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C9B59B32B8DC87D0019C558 /* SnapKit in Frameworks */,
+				0CBF63D62B9AB5F300CA02FF /* DGCharts in Frameworks */,
+				0CBF63D12B9A94CA00CA02FF /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				0C9B59AC2B8DC18B0019C558 /* View */,
+				0CBF63CC2B9999B400CA02FF /* PresenterAndData */,
 				0CBF63C92B96F02200CA02FF /* View Function */,
 				0C9B597A2B8D92090019C558 /* AppDelegate.swift */,
 				0C9B597C2B8D92090019C558 /* SceneDelegate.swift */,
@@ -152,7 +161,6 @@
 				0C9B59AF2B8DC4580019C558 /* MainNC.swift */,
 				0C9B59B42B902F6F0019C558 /* MainPGVC.swift */,
 				0C9B597E2B8D92090019C558 /* MainView.swift */,
-				0CBF63CA2B9997C100CA02FF /* Presenter.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -167,6 +175,16 @@
 				0CBF63C72B96ED6800CA02FF /* ColorReferance.swift */,
 			);
 			path = "View Function";
+			sourceTree = "<group>";
+		};
+		0CBF63CC2B9999B400CA02FF /* PresenterAndData */ = {
+			isa = PBXGroup;
+			children = (
+				0CBF63CA2B9997C100CA02FF /* Presenter.swift */,
+				0CBF63CD2B9999DE00CA02FF /* Data.swift */,
+				0CBF63D22B9AB06E00CA02FF /* JSONData.json */,
+			);
+			path = PresenterAndData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -187,6 +205,8 @@
 			name = AssessmentChart;
 			packageProductDependencies = (
 				0C9B59B22B8DC87D0019C558 /* SnapKit */,
+				0CBF63D02B9A94CA00CA02FF /* Alamofire */,
+				0CBF63D52B9AB5F300CA02FF /* DGCharts */,
 			);
 			productName = AssessmentChart;
 			productReference = 0C9B59772B8D92090019C558 /* AssessmentChart.app */;
@@ -262,6 +282,8 @@
 			mainGroup = 0C9B596E2B8D92090019C558;
 			packageReferences = (
 				0C9B59B12B8DC87D0019C558 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				0CBF63CF2B9A94CA00CA02FF /* XCRemoteSwiftPackageReference "Alamofire" */,
+				0CBF63D42B9AB5F300CA02FF /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = 0C9B59782B8D92090019C558 /* Products */;
 			projectDirPath = "";
@@ -279,6 +301,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CBF63D32B9AB2B800CA02FF /* JSONData.json in Resources */,
 				0C9B59872B8D920A0019C558 /* LaunchScreen.storyboard in Resources */,
 				0C9B59842B8D920A0019C558 /* Assets.xcassets in Resources */,
 			);
@@ -313,6 +336,7 @@
 				0C9B59AB2B8DB23D0019C558 /* MainTBC.swift in Sources */,
 				0CBF63CB2B9997C100CA02FF /* Presenter.swift in Sources */,
 				0C9B59B72B9059DD0019C558 /* ButtonUnderLine.swift in Sources */,
+				0CBF63CE2B9999DE00CA02FF /* Data.swift in Sources */,
 				0C9B59B02B8DC4580019C558 /* MainNC.swift in Sources */,
 				0CBF63C82B96ED6800CA02FF /* ColorReferance.swift in Sources */,
 				0C9B59B52B902F6F0019C558 /* MainPGVC.swift in Sources */,
@@ -658,6 +682,22 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		0CBF63CF2B9A94CA00CA02FF /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 5.9.0;
+			};
+		};
+		0CBF63D42B9AB5F300CA02FF /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -665,6 +705,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0C9B59B12B8DC87D0019C558 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		0CBF63D02B9A94CA00CA02FF /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0CBF63CF2B9A94CA00CA02FF /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		0CBF63D52B9AB5F300CA02FF /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0CBF63D42B9AB5F300CA02FF /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
