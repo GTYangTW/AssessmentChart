@@ -29,6 +29,8 @@
 		0CBF63D12B9A94CA00CA02FF /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 0CBF63D02B9A94CA00CA02FF /* Alamofire */; };
 		0CBF63D32B9AB2B800CA02FF /* JSONData.json in Resources */ = {isa = PBXBuildFile; fileRef = 0CBF63D22B9AB06E00CA02FF /* JSONData.json */; };
 		0CBF63D62B9AB5F300CA02FF /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 0CBF63D52B9AB5F300CA02FF /* DGCharts */; };
+		0CBF63D82B9EFFAD00CA02FF /* Labelarrangement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBF63D72B9EFFAD00CA02FF /* Labelarrangement.swift */; };
+		0CBF63DA2B9FD3C100CA02FF /* ChartInfoLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBF63D92B9FD3C100CA02FF /* ChartInfoLabelView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +74,8 @@
 		0CBF63CA2B9997C100CA02FF /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
 		0CBF63CD2B9999DE00CA02FF /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		0CBF63D22B9AB06E00CA02FF /* JSONData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = JSONData.json; sourceTree = "<group>"; };
+		0CBF63D72B9EFFAD00CA02FF /* Labelarrangement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labelarrangement.swift; sourceTree = "<group>"; };
+		0CBF63D92B9FD3C100CA02FF /* ChartInfoLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartInfoLabelView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,6 +177,8 @@
 				0C9B59FF2B91C2FA0019C558 /* BorderWithLeftBold.swift */,
 				0CBF63C42B95A86B00CA02FF /* LegendView.swift */,
 				0CBF63C72B96ED6800CA02FF /* ColorReferance.swift */,
+				0CBF63D72B9EFFAD00CA02FF /* Labelarrangement.swift */,
+				0CBF63D92B9FD3C100CA02FF /* ChartInfoLabelView.swift */,
 			);
 			path = "View Function";
 			sourceTree = "<group>";
@@ -339,8 +345,10 @@
 				0CBF63CE2B9999DE00CA02FF /* Data.swift in Sources */,
 				0C9B59B02B8DC4580019C558 /* MainNC.swift in Sources */,
 				0CBF63C82B96ED6800CA02FF /* ColorReferance.swift in Sources */,
+				0CBF63D82B9EFFAD00CA02FF /* Labelarrangement.swift in Sources */,
 				0C9B59B52B902F6F0019C558 /* MainPGVC.swift in Sources */,
 				0C9B597D2B8D92090019C558 /* SceneDelegate.swift in Sources */,
+				0CBF63DA2B9FD3C100CA02FF /* ChartInfoLabelView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

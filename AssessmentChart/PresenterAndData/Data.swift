@@ -75,7 +75,7 @@ struct Page: Codable {
     enum ProjStatus: String, Codable, CaseIterable {
         case uncontractedPj = "0"
         case contractingPj = "10"
-        case onCompletionPj = "110"
+        case completionPj = "110"
         case warrantyPj = "130"
         case finishPj = "140"
 
@@ -85,7 +85,7 @@ struct Page: Codable {
                 return "工程狀態(為發包工程:尚未簽約的工程)(A5.6簽定訂約尚未完成)"
             case .contractingPj:
                 return "工程狀態(在建工程:申報竣工前的工程)(B3.4工程竣工未核定)"
-            case .onCompletionPj:
+            case .completionPj:
                 return "工程狀態(完工驗收中工程:竣工驗收階段(含決算前))(B3.12缮製工程決算書核定前)"
             case .warrantyPj:
                 return "工程狀態(保固中工程:決算後)(B3.12缮製工程決算書核定後)"

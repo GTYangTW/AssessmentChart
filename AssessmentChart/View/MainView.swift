@@ -35,6 +35,17 @@ class MainView: UIViewController {
         label.font = UIFont.boldSystemFont(ofSize: 12)
         return label
     }()
+    let viewChartInfo = UIView()
+    let btnMore : UIButton = {
+        let btn = UIButton()
+        btn.setTitle("檢視更多", for: .normal)
+        btn.setTitleColor(.white, for: .normal)
+        btn.setTitleColor(ColorReferance().customBlue, for: .highlighted)
+        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        btn.backgroundColor = ColorReferance().customBlue
+        btn.layer.cornerRadius = 10
+        return btn
+    }()
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -56,6 +67,7 @@ class MainView: UIViewController {
         setuplbTitle()
         presenter.getJSON()
         setupChart()
+        setupBtnMore()
 //        uvDiscription.isUserInteractionEnabled = true
 //        mainScrollview.isUserInteractionEnabled = true
 //        mainScrollview.delaysContentTouches = true
@@ -68,7 +80,7 @@ class MainView: UIViewController {
             make.right.left.bottom.equalToSuperview()
             make.top.equalToSuperview().inset(70)
         }
-        mainScrollview.contentSize = CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width, height: 800)
+        mainScrollview.contentSize = CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width, height: 1000)
     }
     func setuplbTitle() {
         lbTitleChart.text = "工程標案依工程狀態統計"
@@ -107,8 +119,8 @@ class MainView: UIViewController {
         }
         let firstHalf = Array(arrayLegend.prefix(halfCount))
         let secondHalf = Array(arrayLegend.suffix(from: halfCount))
-        let svVerFirst = createVerticalStackView(arrangedSubviews: firstHalf)
-        let svVerSecond = createVerticalStackView(arrangedSubviews: secondHalf)
+        let svVerFirst = createVerticalStackView(arrangedSubviews: firstHalf, saping: 30)
+        let svVerSecond = createVerticalStackView(arrangedSubviews: secondHalf, saping: 30)
         let svAll = createHorizontalStackView(arrangedSubviews: [svVerFirst, svVerSecond])
         return svAll
     }
@@ -155,7 +167,7 @@ class MainView: UIViewController {
         return labelBounds?.size ?? CGSize.zero
     }
     
-    func createVerticalStackView(arrangedSubviews: [UIView]) -> UIStackView {
+    func createVerticalStackView(arrangedSubviews: [UIView], saping: CGFloat) -> UIStackView {
         let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
@@ -280,6 +292,15 @@ class MainView: UIViewController {
         }
         return tempDict
     }
+    func setupBtnMore() {
+        mainScrollview.addSubview(btnMore)
+        btnMore.snp.makeConstraints { make in
+            make.top.equalTo(lbDataDateRange.snp.bottom).offset(10)
+            make.centerX.equalToSuperview()
+            make.width.equalToSuperview().multipliedBy(0.9)
+            make.height.equalTo(50)
+        }
+    }
 }
 
 extension MainView: UIScrollViewDelegate{
@@ -303,7 +324,40 @@ extension MainView: ChartDataProtocol{
 }
 
 extension MainView: ChartViewDelegate{
-    
+    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+        updateChartViewConstraint()
+        let ints = [1, 2, 4, 5]
+        setupInfoView(intProjectCount: ints)
+    }
+    func setupInfoView(intProjectCount: [Int]) {
+        let frameSize = CGRect(x: 0, y: 0, width: 360, height: 180)
+        let chartInfoLabelView = ChartInfoLabelView(frame: frameSize, intProjectCount: intProjectCount)
+        viewChartInfo.addSubview(chartInfoLabelView)
+        viewChartInfo.tag = 10
+        mainScrollview.addSubview(viewChartInfo)
+        viewChartInfo.snp.makeConstraints { make in
+            make.top.equalTo(lbTitleChart.snp.bottomMargin).offset(10)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(360)
+            make.height.equalTo(180)
+        }
+    }
+    func chartValueNothingSelected(_ chartView: ChartViewBase) {
+        disableUpdateChartViewConstraint()
+        if let subviewWithTag = mainScrollview.viewWithTag(10) as? UIView {
+            subviewWithTag.removeFromSuperview()
+        }
+    }
+    func updateChartViewConstraint() {
+        barChart.snp.updateConstraints { make in
+            make.top.equalTo(lbTitleChart.snp.bottomMargin).offset(200)
+        }
+    }
+    func disableUpdateChartViewConstraint() {
+        barChart.snp.updateConstraints { make in
+            make.top.equalTo(lbTitleChart.snp.bottomMargin).offset(10)
+        }
+    }
 }
 extension String {
     func width(withConstrainedHeight height: CGFloat, font: UIFont) -> CGFloat {

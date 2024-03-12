@@ -47,8 +47,8 @@ func setupDescription(){
     
  */
 // 創造類別的內容
+// 類別外部使用的方法？？
 class LegendViewBlock: UIView {
-    private let view = UIView()
     private let textLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
@@ -79,24 +79,27 @@ class LegendViewBlock: UIView {
     }
     
     required init?(coder: NSCoder) {
+        super.init(coder: coder)
         fatalError("init(coder:) has not been implemented")
     }
-    func stringToArray(strings: [String]) -> [UILabel]{
-        var arrayTemp = [UILabel]()
-        for string in strings{
-            let lbtemp = UILabel()
-            lbtemp.font = UIFont(name: "NotoSansTC-Regular", size: 10)
-            lbtemp.text = string
-            lbtemp.numberOfLines = 1
-            arrayTemp.append(lbtemp)
-        }
-        return arrayTemp
-    }
     func labelSize(label: UILabel) -> CGSize {
-        let labelWidth = view.frame.width - 40 // 根据左右间距计算 Label 的宽度
+        let labelWidth = self.frame.width - 40 // 根据左右间距计算 Label 的宽度
         let maxSize = CGSize(width: labelWidth, height: CGFloat.greatestFiniteMagnitude)
         let labelBounds = label.text?.boundingRect(with: maxSize, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: label.font], context: nil)
         return labelBounds?.size ?? CGSize.zero
     }
 }
 
+// 可以用這種方式呼叫方法
+extension LegendViewBlock {
+    static func stringToArray(strings: [String]) -> [UILabel]{
+        var arrayTemp = [UILabel]()
+        for string in strings{
+            let lbtemp = UILabel()
+            lbtemp.text = string
+            lbtemp.numberOfLines = 1
+            arrayTemp.append(lbtemp)
+        }
+        return arrayTemp
+    }
+}
