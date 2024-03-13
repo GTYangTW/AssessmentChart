@@ -15,9 +15,18 @@ class ChartInfoLabelView: UIView {
         label.font = UIFont.boldSystemFont(ofSize: 20)
         return label
     }()
-    init(frame: CGRect, intProjectCount: [Int]){
+    let line: UIView = {
+        let v = UIView()
+        v.frame = CGRect(x: 0, y: 0, width: 5, height:  100)
+        v.backgroundColor = .black
+        v.tag = 2
+        return v
+    }()
+    let insetDistance: CGFloat = 15
+    init(frame: CGRect, intProjectCount: [Int], pointInChart: CGPoint){
         super.init(frame: frame)
         self.setupChartInfo(intProjectCount: intProjectCount)
+        self.setupChartInfoIndex(pointInChart: pointInChart)
     }
 
     required init?(coder: NSCoder) {
@@ -40,7 +49,16 @@ class ChartInfoLabelView: UIView {
         addSubview(sv)
         sv.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
-            make.left.right.equalToSuperview().inset(15)
+            make.left.right.equalToSuperview().inset(insetDistance)
+        }
+    }
+    func setupChartInfoIndex(pointInChart: CGPoint){
+        addSubview(line)
+        line.snp.makeConstraints { make in
+            make.top.equalTo(self.snp.bottom)
+            make.centerX.equalTo(pointInChart.x - insetDistance)
+            make.width.equalTo(1)
+            make.height.equalTo(pointInChart.y - 5)
         }
     }
     

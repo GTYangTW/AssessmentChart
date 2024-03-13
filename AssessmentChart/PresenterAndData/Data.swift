@@ -9,6 +9,7 @@ import Foundation
 
 
 import Foundation
+import UIKit
 
 // MARK: - TPEnginge
 struct TPPData: Codable {
@@ -43,6 +44,8 @@ struct Page: Codable {
     let projStatus: ProjStatus
     let projType, projProperty, projPropertyType, projAgent: String
     let cDate, uDate: String
+    // 設置顏色參賽不確定寫法正當與否？？
+    let color = ColorReferance()
 
     enum CodingKeys: String, CodingKey, CaseIterable {
         case eirID = "eir_id"
@@ -74,10 +77,10 @@ struct Page: Codable {
     }
     enum ProjStatus: String, Codable, CaseIterable {
         case uncontractedPj = "0"
-        case contractingPj = "10"
-        case completionPj = "110"
-        case warrantyPj = "130"
-        case finishPj = "140"
+        case contractingPj  = "10"
+        case completionPj   = "110"
+        case warrantyPj     = "130"
+        case finishPj       = "140"
 
         var completeName: String {
             switch self {
@@ -91,6 +94,20 @@ struct Page: Codable {
                 return "工程狀態(保固中工程:決算後)(B3.12缮製工程決算書核定後)"
             case .finishPj:
                 return "工程狀態(結案(保固期滿):C發還保固(活)保證金)"
+            }
+        }
+        var color: UIColor {
+            switch self {
+            case .uncontractedPj:
+                return UIColor.darkGray
+            case .contractingPj:
+                return UIColor(red: 237/255, green: 168/255, blue: 0, alpha: 1.0)
+            case .completionPj:
+                return UIColor(red: 51/255, green: 108/255, blue: 251/255, alpha: 0.9)
+            case .warrantyPj:
+                return UIColor(red: 1, green: 126/255, blue: 119/255, alpha: 1.0)
+            case .finishPj:
+                return UIColor(red: 10/255, green: 191/255, blue: 129/255, alpha: 1.0)
             }
         }
     }
