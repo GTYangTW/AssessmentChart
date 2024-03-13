@@ -253,7 +253,6 @@ class MainView: UIViewController {
                                              yValues: tempY))
         }
         
-        barChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: Array(dictForChart.keys))
         let set = BarChartDataSet(entries: entries, label: "圖例")
         // TODO: 顏色要調整
         //set.colors = ChartColorTemplates.material()
@@ -269,6 +268,7 @@ class MainView: UIViewController {
 //                           Page.ProjStatus.finishPj.completeName,
 //                           Page.ProjStatus.warrantyPj.completeName]
         let data = BarChartData(dataSet: set)
+        barChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: Array(dictForChart.keys))
         barChart.data = data
         // 調整 bar width，從 barData 改
         guard barChart.barData != nil else { return }
@@ -390,7 +390,7 @@ extension MainView: ChartViewDelegate{
         let gestureLocation = gesture.location(in: chartView)
         guard let highlight = chartView.getHighlightByTouchPoint(gestureLocation) else { return }
         let pointInChart = CGPoint(x: highlight.xPx, y: highlight.yPx)
-        
+        print(highlight.dataSetIndex)
         setupInfoView(intProjectCount: ints, pointInChart: pointInChart)
     }
     func setupInfoView(intProjectCount: [Int], pointInChart: CGPoint) {
