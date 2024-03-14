@@ -22,7 +22,7 @@ class BorderWithLeftBold: UIView {
     }
     
     private func createview(color: UIColor){
-        lowerView = UIView(frame: CGRect(x: shiftX, y: 0, width: frame.size.width, height: frame.size.height))
+        lowerView = UIView(frame: CGRect(x: shiftX, y: 0, width: frame.size.width , height: frame.size.height))
         lowerView.backgroundColor = color
         upperView = UIView(frame: CGRect(x: lowerView.frame.origin.x + 10,
                                          y: lowerView.frame.origin.y + 2,
