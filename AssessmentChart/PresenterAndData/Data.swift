@@ -125,8 +125,13 @@ enum ProjDepname: String, Codable {
 }
 
 
-enum ProjunitAliasname: String, Codable {
+enum ProjunitAliasname: String, Codable, CaseIterable {
     case 新工處 = "新工處"
+    case 工務局 = "工務局"
+    case 水利處 = "水利處"
+    case 公園處 = "公園處"
+    case 衛工處 = "衛工處"
+    case 大地處 = "大地處"
 }
 
 // MARK: - Encode/decode helpers

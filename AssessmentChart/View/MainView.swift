@@ -35,8 +35,8 @@ class MainView: UIViewController {
         label.font = UIFont.boldSystemFont(ofSize: 12)
         return label
     }()
-    let viewChartInfo = UIView()
-    let btnMore : UIButton = {
+    private let viewChartInfo = UIView()
+    private let btnMore : UIButton = {
         let btn = UIButton()
         btn.setTitle("檢視更多", for: .normal)
         btn.setTitleColor(.white, for: .normal)
@@ -46,6 +46,8 @@ class MainView: UIViewController {
         btn.layer.cornerRadius = 10
         return btn
     }()
+    private var dictForChart: [String: [Int: Double]]!
+    private let userDefault = UserDefaults()
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -237,7 +239,8 @@ class MainView: UIViewController {
                                                     "衛工處": [10: 55.0, 110: 12.0, 0: 53.0, 130: 25.0],
                                                     "大地處": [10: 50.0, 110: 50.0, 0: 50.0, 130: 50.0, 140: 50.0]
                                                     ]
-        let arrayAlias: [String] = ["新工處", "工務局", "水利處", "公園處", "衛工處", "大地處"]
+        self.dictForChart = dictForChart
+        let arrayAlias = ProjunitAliasname.allCases
         // 沒研究出來
         /*
         var dataSets = [BarChartDataSet]()
@@ -325,8 +328,8 @@ class MainView: UIViewController {
          // 直接把 “alias” 當成 x 座標Label ？？
         for i in 0..<dictForChart.keys.count {
             let alias = arrayAlias[i]
-            guard dictForChart.keys.contains(alias) else { return }
-            let dictStatusCount: [Int: Double] = dictForChart[alias]!
+            guard dictForChart.keys.contains(alias.rawValue) else { return }
+            let dictStatusCount: [Int: Double] = dictForChart[alias.rawValue]!
 
             var tempY = [Double]()
             for (status , count) in dictStatusCount {
@@ -452,7 +455,6 @@ enum number{
 extension MainView: ChartDataProtocol{
     func chartData(_ chartData: [Page]) {
         self.chartData = chartData
-        calculateAliasAndStatus(datas: chartData)
         //print(self.chartData)
         DispatchQueue.main.async {
             self.importCharData(data: chartData)
@@ -461,26 +463,52 @@ extension MainView: ChartDataProtocol{
 }
 
 extension MainView: ChartViewDelegate{
-    func chartScaled(_ chartView: ChartViewBase, scaleX: CGFloat, scaleY: CGFloat) {
-        print(scaleX)
-    }
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-        updateChartViewConstraint()
-        let ints = [1, 2, 4, 5, 66]
-        
-        // 獲取點選位置
+        // 點選功能 .entryIndex(entry: entry) 可以指向數據，需要配合 unwrappedEntry
+        guard let unwrappedEntry = chartView.data?.dataSets.first as? BarChartDataSet else { return }
+        // 獲取點選位置，highlight 指示點選位置
         let gesture = UITapGestureRecognizer()
-        let gestureLocation = gesture.location(in: chartView)
-        guard let highlight = chartView.getHighlightByTouchPoint(gestureLocation) else { return }
         let pointInChart = CGPoint(x: highlight.xPx, y: highlight.yPx)
-        print(highlight.dataSetIndex)
-        setupInfoView(intProjectCount: ints, pointInChart: pointInChart)
+        // Tapped column function
+        let index = unwrappedEntry.entryIndex(entry: entry)
+        removeInfoView(chartView: chartView)
+        
+        if index != userDefault.integer(forKey: "tappedColumn") {
+            updateChartViewConstraint()
+            let arrayInfoData = updateInfoViewData(index: index)
+            setupInfoView(intProjectCount: arrayInfoData, pointInChart: pointInChart)
+        } else {
+            updateInfoViewData(index: index)
+        }
+        userDefault.setValue(index, forKey: "tappedColumn")
     }
+    func updateInfoViewData(index: Int) -> [Int] {
+        let arrayAlias = ProjunitAliasname.allCases
+        let currentAlias = arrayAlias[index]
+        guard dictForChart.keys.contains(currentAlias.rawValue) ,
+              ((dictForChart[currentAlias.rawValue]) != nil) else { return []}
+        let currentStatusAndCount: [Int: Double] = dictForChart[currentAlias.rawValue]!
+        let arrayStatusString = Page.ProjStatus.allCases
+        let arrayStatusInt = arrayStatusString.map { Int($0.rawValue) }
+        var arrayTemp = [Int]()
+        
+        for i in 0..<arrayStatusInt.count {
+            guard let index = arrayStatusInt[i] else { return []}
+            if currentStatusAndCount.keys.contains(index){
+                arrayTemp.append(Int(currentStatusAndCount[index] ?? 0))
+            } else {
+                arrayTemp.append(0)
+            }
+        }
+        return arrayTemp
+    }
+    
     func setupInfoView(intProjectCount: [Int], pointInChart: CGPoint) {
         let frameSize = CGRect(x: 0, y: 0, width: 360, height: 180)
         let chartInfoLabelView = ChartInfoLabelView(frame: frameSize, intProjectCount: intProjectCount, pointInChart: pointInChart)
+        chartInfoLabelView.tag = 1
         viewChartInfo.addSubview(chartInfoLabelView)
-        viewChartInfo.tag = 1
+        viewChartInfo.tag = 2
         mainScrollview.addSubview(viewChartInfo)
         viewChartInfo.snp.makeConstraints { make in
             make.top.equalTo(lbTitleChart.snp.bottomMargin).offset(10)
@@ -491,8 +519,13 @@ extension MainView: ChartViewDelegate{
     }
     func chartValueNothingSelected(_ chartView: ChartViewBase) {
         disableUpdateChartViewConstraint()
-        guard let subviewInfo = mainScrollview.viewWithTag(1) else { return }
-        subviewInfo.removeFromSuperview()
+        removeInfoView(chartView: chartView)
+    }
+    func removeInfoView(chartView: ChartViewBase){
+        guard let subview = mainScrollview.viewWithTag(2),
+              let subChartInfoLabelview = mainScrollview.viewWithTag(1) else { return }
+        subview.removeFromSuperview()
+        subChartInfoLabelview.removeFromSuperview()
     }
     func updateChartViewConstraint() {
         barChart.snp.updateConstraints { make in
