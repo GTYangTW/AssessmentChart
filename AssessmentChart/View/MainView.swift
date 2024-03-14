@@ -228,8 +228,81 @@ class MainView: UIViewController {
         }
          */
         
-        let dictForChart = calculateAliasAndStatus(datas: self.chartData)
-        print(dictForChart)
+//        let dictForChart = calculateAliasAndStatus(datas: self.chartData)
+//        print(dictForChart)
+        let dictForChart: [String: [Int: Double]] = ["新工處": [10: 85.0, 110: 10.0, 0: 13.0, 130: 2.0],
+                                                    "工務局": [10: 25.0, 110: 17.0, 0: 93.0, 130: 22.0],
+                                                    "水利處": [10: 15.0, 110: 16.0, 0: 83.0, 130: 23.0],
+                                                    "公園處": [10: 45.0, 110: 15.0, 0: 73.0, 130: 21.0],
+                                                    "衛工處": [10: 55.0, 110: 12.0, 0: 53.0, 130: 25.0],
+                                                    "大地處": [10: 50.0, 110: 50.0, 0: 50.0, 130: 50.0, 140: 50.0]
+                                                    ]
+        let arrayAlias: [String] = ["新工處", "工務局", "水利處", "公園處", "衛工處", "大地處"]
+        // 沒研究出來
+        /*
+        var dataSets = [BarChartDataSet]()
+        for i in 0..<dictForChart.keys.count {
+            let alias = arrayAlias[i]
+            print(alias)
+            guard dictForChart.keys.contains(alias) else { return }
+            let dictStatusCount: [Int: Double] = dictForChart[alias]!
+            for (status, count) in dictStatusCount{
+                print("Status: \(status), Count:\(count)")
+                switch status {
+                case 0:
+                    let entry = BarChartDataEntry(x: Double(i),
+                                                  y: count)
+                    var dataEntries = [BarChartDataEntry]()
+                    dataEntries.append(entry)
+                    let set = BarChartDataSet(entries: dataEntries, label: "未開工")
+                    set.colors = [NSUIColor(cgColor: Page.ProjStatus.uncontractedPj.color.cgColor)]
+                    dataSets.append(set)
+                case 10:
+                    let entry = BarChartDataEntry(x: Double(i),
+                                                  y: count)
+                    
+                    var dataEntries = [BarChartDataEntry]()
+                    dataEntries.append(entry)
+                    let set = BarChartDataSet(entries: dataEntries, label: "開工中")
+                    set.colors = [NSUIColor(cgColor: Page.ProjStatus.contractingPj.color.cgColor)]
+                    dataSets.append(set)
+                case 110:
+                    print("")
+                    let entry = BarChartDataEntry(x: Double(i),
+                                                  y: count)
+                    
+                    var dataEntries = [BarChartDataEntry]()
+                    dataEntries.append(entry)
+                    let set = BarChartDataSet(entries: dataEntries, label: "3")
+                    set.colors = [NSUIColor(cgColor: Page.ProjStatus.completionPj.color.cgColor)]
+                    dataSets.append(set)
+                case 130:
+                    print("")
+                    let entry = BarChartDataEntry(x: Double(i),
+                                                  y: count)
+                    
+                    var dataEntries = [BarChartDataEntry]()
+                    dataEntries.append(entry)
+                    let set = BarChartDataSet(entries: dataEntries, label: "4")
+                    set.colors = [NSUIColor(cgColor: Page.ProjStatus.warrantyPj.color.cgColor)]
+                    dataSets.append(set)
+                case 140:
+                    print("")
+                    let entry = BarChartDataEntry(x: Double(i),
+                                                  y: count)
+                    
+                    var dataEntries = [BarChartDataEntry]()
+                    dataEntries.append(entry)
+                    let set = BarChartDataSet(entries: dataEntries, label: "5")
+                    set.colors = [NSUIColor(cgColor: Page.ProjStatus.finishPj.color.cgColor)]
+                    dataSets.append(set)
+                default:
+                    fatalError("BarChartDataSet collect failed!!")
+                }
+            }
+        }
+        let chartData = BarChartData(dataSets: dataSets)
+        */
         /*
         let plate = ["新工處"]
         let arrayData: [Double] = [110.0, 100.1, 11.2, 19.3, 200.4]
@@ -237,7 +310,7 @@ class MainView: UIViewController {
             entries.append(BarChartDataEntry(x: Double(i), yValues: arrayData))
         }
          */
-        
+        /*
         var tempX = [Double]()
         var tempY = [Double]()
         for (keys, values) in dictForChart {
@@ -248,8 +321,18 @@ class MainView: UIViewController {
                 //print("Value:\(value)")
             }
         }
-        for i in 0..<dictForChart.count {
-            entries.append(BarChartDataEntry(x: tempX[Int(i)],
+         */
+         // 直接把 “alias” 當成 x 座標Label ？？
+        for i in 0..<dictForChart.keys.count {
+            let alias = arrayAlias[i]
+            guard dictForChart.keys.contains(alias) else { return }
+            let dictStatusCount: [Int: Double] = dictForChart[alias]!
+
+            var tempY = [Double]()
+            for (status , count) in dictStatusCount {
+                tempY.append(count)
+            }
+            entries.append(BarChartDataEntry(x: Double(i),
                                              yValues: tempY))
         }
         
