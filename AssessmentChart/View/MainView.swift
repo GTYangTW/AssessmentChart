@@ -35,8 +35,8 @@ class MainView: UIViewController {
         label.font = UIFont.boldSystemFont(ofSize: 12)
         return label
     }()
-    let viewChartInfo = UIView()
-    let btnMore : UIButton = {
+    private let viewChartInfo = UIView()
+    private let btnMore : UIButton = {
         let btn = UIButton()
         btn.setTitle("檢視更多", for: .normal)
         btn.setTitleColor(.white, for: .normal)
@@ -46,6 +46,8 @@ class MainView: UIViewController {
         btn.layer.cornerRadius = 10
         return btn
     }()
+    private var dictForChart: [String: [Int: Double]]!
+    private let userDefault = UserDefaults()
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -184,6 +186,19 @@ class MainView: UIViewController {
     }
     func setupChart() {
         let frameWidth = mainScrollview.snp.width
+        barChart.fitBars = true
+        barChart.scaleXEnabled = false 
+        barChart.scaleYEnabled = false
+        barChart.xAxis.drawGridLinesEnabled = false
+        barChart.rightAxis.drawZeroLineEnabled = false
+        // 設置左右情況，gridLineWidth 表示橫軸上下的厚度
+        barChart.rightAxis.gridLineWidth = CGFloat(0)
+        // 單次長度
+        barChart.leftAxis.gridLineDashLengths = [10.0]
+        // Y 起使為 0
+        barChart.leftAxis.axisMinimum = 0
+        barChart.legend.enabled = false
+        barChart.xAxis.labelPosition = .bottom
         barChart.frame = CGRect(x: 0,
                                 y: 0,
                                 width: self.view.frame.size.width,
@@ -197,6 +212,13 @@ class MainView: UIViewController {
         setupDataDateRange()
     }
     // TODO: 三元運算子修正
+    /*
+     BarChartView 四個步驟
+     1. 產生 BarChartDataEntry
+     2. 產生 BarChartDataSet
+     3. 產生 BarChartData
+     4. 利用 ChartsView 顯示 BarChartData
+     */
     func importCharData(data: [Page]) {
         var entries = [BarChartDataEntry]()
         /*
@@ -208,7 +230,82 @@ class MainView: UIViewController {
         }
          */
         
-        let dictForChart = calculateAliasAndStatus(datas: self.chartData)
+//        let dictForChart = calculateAliasAndStatus(datas: self.chartData)
+//        print(dictForChart)
+        let dictForChart: [String: [Int: Double]] = ["新工處": [10: 85.0, 110: 10.0, 0: 13.0, 130: 2.0],
+                                                    "工務局": [10: 25.0, 110: 17.0, 0: 93.0, 130: 22.0],
+                                                    "水利處": [10: 15.0, 110: 16.0, 0: 83.0, 130: 23.0],
+                                                    "公園處": [10: 45.0, 110: 15.0, 0: 73.0, 130: 21.0],
+                                                    "衛工處": [10: 55.0, 110: 12.0, 0: 53.0, 130: 25.0],
+                                                    "大地處": [10: 50.0, 110: 50.0, 0: 50.0, 130: 50.0, 140: 50.0]
+                                                    ]
+        self.dictForChart = dictForChart
+        let arrayAlias = ProjunitAliasname.allCases
+        // 沒研究出來
+        /*
+        var dataSets = [BarChartDataSet]()
+        for i in 0..<dictForChart.keys.count {
+            let alias = arrayAlias[i]
+            print(alias)
+            guard dictForChart.keys.contains(alias) else { return }
+            let dictStatusCount: [Int: Double] = dictForChart[alias]!
+            for (status, count) in dictStatusCount{
+                print("Status: \(status), Count:\(count)")
+                switch status {
+                case 0:
+                    let entry = BarChartDataEntry(x: Double(i),
+                                                  y: count)
+                    var dataEntries = [BarChartDataEntry]()
+                    dataEntries.append(entry)
+                    let set = BarChartDataSet(entries: dataEntries, label: "未開工")
+                    set.colors = [NSUIColor(cgColor: Page.ProjStatus.uncontractedPj.color.cgColor)]
+                    dataSets.append(set)
+                case 10:
+                    let entry = BarChartDataEntry(x: Double(i),
+                                                  y: count)
+                    
+                    var dataEntries = [BarChartDataEntry]()
+                    dataEntries.append(entry)
+                    let set = BarChartDataSet(entries: dataEntries, label: "開工中")
+                    set.colors = [NSUIColor(cgColor: Page.ProjStatus.contractingPj.color.cgColor)]
+                    dataSets.append(set)
+                case 110:
+                    print("")
+                    let entry = BarChartDataEntry(x: Double(i),
+                                                  y: count)
+                    
+                    var dataEntries = [BarChartDataEntry]()
+                    dataEntries.append(entry)
+                    let set = BarChartDataSet(entries: dataEntries, label: "3")
+                    set.colors = [NSUIColor(cgColor: Page.ProjStatus.completionPj.color.cgColor)]
+                    dataSets.append(set)
+                case 130:
+                    print("")
+                    let entry = BarChartDataEntry(x: Double(i),
+                                                  y: count)
+                    
+                    var dataEntries = [BarChartDataEntry]()
+                    dataEntries.append(entry)
+                    let set = BarChartDataSet(entries: dataEntries, label: "4")
+                    set.colors = [NSUIColor(cgColor: Page.ProjStatus.warrantyPj.color.cgColor)]
+                    dataSets.append(set)
+                case 140:
+                    print("")
+                    let entry = BarChartDataEntry(x: Double(i),
+                                                  y: count)
+                    
+                    var dataEntries = [BarChartDataEntry]()
+                    dataEntries.append(entry)
+                    let set = BarChartDataSet(entries: dataEntries, label: "5")
+                    set.colors = [NSUIColor(cgColor: Page.ProjStatus.finishPj.color.cgColor)]
+                    dataSets.append(set)
+                default:
+                    fatalError("BarChartDataSet collect failed!!")
+                }
+            }
+        }
+        let chartData = BarChartData(dataSets: dataSets)
+        */
         /*
         let plate = ["新工處"]
         let arrayData: [Double] = [110.0, 100.1, 11.2, 19.3, 200.4]
@@ -216,7 +313,7 @@ class MainView: UIViewController {
             entries.append(BarChartDataEntry(x: Double(i), yValues: arrayData))
         }
          */
-        
+        /*
         var tempX = [Double]()
         var tempY = [Double]()
         for (keys, values) in dictForChart {
@@ -227,18 +324,61 @@ class MainView: UIViewController {
                 //print("Value:\(value)")
             }
         }
-        for i in 0..<dictForChart.count {
-            entries.append(BarChartDataEntry(x: tempX[Int(i)],
+         */
+         // 直接把 “alias” 當成 x 座標Label ？？
+        for i in 0..<dictForChart.keys.count {
+            let alias = arrayAlias[i]
+            guard dictForChart.keys.contains(alias.rawValue) else { return }
+            let dictStatusCount: [Int: Double] = dictForChart[alias.rawValue]!
+
+            var tempY = [Double]()
+            for (status , count) in dictStatusCount {
+                tempY.append(count)
+            }
+            entries.append(BarChartDataEntry(x: Double(i),
                                              yValues: tempY))
         }
         
-        barChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: Array(dictForChart.keys))
-//        barChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: plate)
         let set = BarChartDataSet(entries: entries, label: "圖例")
-        set.colors = ChartColorTemplates.colorful()
+        // TODO: 顏色要調整
+        //set.colors = ChartColorTemplates.material()
+        //set.colors = [color.customRed, color.customYellow, color.customGreen, .darkGray]
+        set.colors = [Page.ProjStatus.contractingPj.color,
+                      Page.ProjStatus.uncontractedPj.color,
+                      Page.ProjStatus.completionPj.color,
+                      Page.ProjStatus.finishPj.color,
+                      Page.ProjStatus.warrantyPj.color]
+//        set.stackLabels = [Page.ProjStatus.contractingPj.completeName,
+//                           Page.ProjStatus.uncontractedPj.completeName,
+//                           Page.ProjStatus.completionPj.completeName,
+//                           Page.ProjStatus.finishPj.completeName,
+//                           Page.ProjStatus.warrantyPj.completeName]
         let data = BarChartData(dataSet: set)
+        barChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: Array(dictForChart.keys))
         barChart.data = data
+        // 調整 bar width，從 barData 改
+        guard barChart.barData != nil else { return }
+        barChart.barData?.barWidth = 0.1
+        // 調整 x 座標的數量
+        barChart.xAxis.labelCount = dictForChart.values.count
     }
+    // 不確定是否正確
+    /*
+    func setColor(value: Double) -> UIColor{
+        if(value < 10){
+            return Page.ProjStatus.uncontractedPj.color
+        }
+        else if(value <= 20 && value >= 10){
+            return Page.ProjStatus.completionPj.color
+        }
+        else if(value > 20){
+            return Page.ProjStatus.contractingPj.color
+        }
+        else {
+        return UIColor.black
+        }
+    }
+     */
     func setupDataDateRange(){
         let dateFormatterMin = DateFormatter()
         dateFormatterMin.dateFormat = "yyyy-MM-dd"
@@ -315,7 +455,6 @@ enum number{
 extension MainView: ChartDataProtocol{
     func chartData(_ chartData: [Page]) {
         self.chartData = chartData
-        calculateAliasAndStatus(datas: chartData)
         //print(self.chartData)
         DispatchQueue.main.async {
             self.importCharData(data: chartData)
@@ -325,15 +464,51 @@ extension MainView: ChartDataProtocol{
 
 extension MainView: ChartViewDelegate{
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-        updateChartViewConstraint()
-        let ints = [1, 2, 4, 5]
-        setupInfoView(intProjectCount: ints)
+        // 點選功能 .entryIndex(entry: entry) 可以指向數據，需要配合 unwrappedEntry
+        guard let unwrappedEntry = chartView.data?.dataSets.first as? BarChartDataSet else { return }
+        // 獲取點選位置，highlight 指示點選位置
+        let gesture = UITapGestureRecognizer()
+        let pointInChart = CGPoint(x: highlight.xPx, y: highlight.yPx)
+        // Tapped column function
+        let index = unwrappedEntry.entryIndex(entry: entry)
+        removeInfoView(chartView: chartView)
+        
+        if index != userDefault.integer(forKey: "tappedColumn") {
+            updateChartViewConstraint()
+            let arrayInfoData = updateInfoViewData(index: index)
+            setupInfoView(intProjectCount: arrayInfoData, pointInChart: pointInChart)
+        } else {
+            updateInfoViewData(index: index)
+        }
+        userDefault.setValue(index, forKey: "tappedColumn")
     }
-    func setupInfoView(intProjectCount: [Int]) {
+    func updateInfoViewData(index: Int) -> [Int] {
+        let arrayAlias = ProjunitAliasname.allCases
+        let currentAlias = arrayAlias[index]
+        guard dictForChart.keys.contains(currentAlias.rawValue) ,
+              ((dictForChart[currentAlias.rawValue]) != nil) else { return []}
+        let currentStatusAndCount: [Int: Double] = dictForChart[currentAlias.rawValue]!
+        let arrayStatusString = Page.ProjStatus.allCases
+        let arrayStatusInt = arrayStatusString.map { Int($0.rawValue) }
+        var arrayTemp = [Int]()
+        
+        for i in 0..<arrayStatusInt.count {
+            guard let index = arrayStatusInt[i] else { return []}
+            if currentStatusAndCount.keys.contains(index){
+                arrayTemp.append(Int(currentStatusAndCount[index] ?? 0))
+            } else {
+                arrayTemp.append(0)
+            }
+        }
+        return arrayTemp
+    }
+    
+    func setupInfoView(intProjectCount: [Int], pointInChart: CGPoint) {
         let frameSize = CGRect(x: 0, y: 0, width: 360, height: 180)
-        let chartInfoLabelView = ChartInfoLabelView(frame: frameSize, intProjectCount: intProjectCount)
+        let chartInfoLabelView = ChartInfoLabelView(frame: frameSize, intProjectCount: intProjectCount, pointInChart: pointInChart)
+        chartInfoLabelView.tag = 1
         viewChartInfo.addSubview(chartInfoLabelView)
-        viewChartInfo.tag = 10
+        viewChartInfo.tag = 2
         mainScrollview.addSubview(viewChartInfo)
         viewChartInfo.snp.makeConstraints { make in
             make.top.equalTo(lbTitleChart.snp.bottomMargin).offset(10)
@@ -344,9 +519,13 @@ extension MainView: ChartViewDelegate{
     }
     func chartValueNothingSelected(_ chartView: ChartViewBase) {
         disableUpdateChartViewConstraint()
-        if let subviewWithTag = mainScrollview.viewWithTag(10) as? UIView {
-            subviewWithTag.removeFromSuperview()
-        }
+        removeInfoView(chartView: chartView)
+    }
+    func removeInfoView(chartView: ChartViewBase){
+        guard let subview = mainScrollview.viewWithTag(2),
+              let subChartInfoLabelview = mainScrollview.viewWithTag(1) else { return }
+        subview.removeFromSuperview()
+        subChartInfoLabelview.removeFromSuperview()
     }
     func updateChartViewConstraint() {
         barChart.snp.updateConstraints { make in
