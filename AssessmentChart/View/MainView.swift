@@ -15,11 +15,11 @@ class MainView: UIViewController {
     private var color: ColorReferance!
     private let svLegend = UIStackView()
     private let legendDiscription = UIView()
-    private lazy var legendBlock = LegendViewBlock(text: "未發包工程", color: .darkGray)
-    private lazy var legendBlock1 = LegendViewBlock(text: "在建工程", color: color.customYellow)
-    private lazy var legendBlock2 = LegendViewBlock(text: "完工驗收中工程", color: color.customGreen)
-    private lazy var legendBlock3 = LegendViewBlock(text: "保固中工程", color: color.customRed)
-    private lazy var legendBlock4 = LegendViewBlock(text: "結案（保固期滿）", color: color.customBlue)
+    private lazy var legendBlock = LegendViewBlock(text: "未發包工程", color: Page.ProjStatus.uncontractedPj.color)
+    private lazy var legendBlock1 = LegendViewBlock(text: "在建工程", color: Page.ProjStatus.contractingPj.color)
+    private lazy var legendBlock2 = LegendViewBlock(text: "完工驗收中工程", color: Page.ProjStatus.finishPj.color)
+    private lazy var legendBlock3 = LegendViewBlock(text: "保固中工程", color: Page.ProjStatus.warrantyPj.color)
+    private lazy var legendBlock4 = LegendViewBlock(text: "結案（保固期滿）", color: Page.ProjStatus.completionPj.color)
     private lazy var arrayLegend: [LegendViewBlock] = [legendBlock, legendBlock1, legendBlock2, legendBlock3, legendBlock4]
     
     private var chartData: [Page]!
@@ -227,6 +227,7 @@ class MainView: UIViewController {
                                                     "衛工處": [10: 55.0, 110: 12.0, 0: 53.0, 130: 25.0],
                                                     "大地處": [10: 50.0, 110: 50.0, 0: 50.0, 130: 50.0, 140: 50.0]
                                                     ]
+        self.dictForChart = dictForChart
         let arrayAlias = ProjunitAliasname.allCases
         // Data 三階段 -> Entry(單數據) -> Set(數據集) -> Data(圖表數據)
         var dataSets = [BarChartDataSet]()
@@ -247,9 +248,9 @@ class MainView: UIViewController {
             dataSets.append(set)
             set.colors = [Page.ProjStatus.contractingPj.color,
                           Page.ProjStatus.uncontractedPj.color,
-                          Page.ProjStatus.completionPj.color,
                           Page.ProjStatus.finishPj.color,
-                          Page.ProjStatus.warrantyPj.color]
+                          Page.ProjStatus.warrantyPj.color,
+                          Page.ProjStatus.completionPj.color]
             set.stackLabels = ProjunitAliasname.allCases.map{ $0.rawValue }
         }
         let data = BarChartData(dataSets: dataSets)
@@ -346,14 +347,16 @@ extension MainView: ChartDataProtocol{
 extension MainView: ChartViewDelegate{
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
         // 點選功能 .entryIndex(entry: entry) 可以指向數據，需要配合 unwrappedEntry
-        guard let unwrappedEntry = chartView.data?.dataSets.first as? BarChartDataSet else { return }
+        guard let unwrappedEntry = chartView.data?.dataSets as? [BarChartDataSet] else { return }
         // 獲取點選位置，highlight 指示點選位置
         let gesture = UITapGestureRecognizer()
         let pointInChart = CGPoint(x: highlight.xPx, y: highlight.yPx)
         // Tapped column function
-        let index = unwrappedEntry.entryIndex(entry: entry)
+        //let index = unwrappedEntry.firstIndex(of: entry)
+        let index = Int(entry.x)
+        print(index)
         removeInfoView(chartView: chartView)
-        
+
         if index != userDefault.integer(forKey: "tappedColumn") {
             updateChartViewConstraint()
             let arrayInfoData = updateInfoViewData(index: index)
@@ -361,7 +364,7 @@ extension MainView: ChartViewDelegate{
         } else {
             updateInfoViewData(index: index)
         }
-        userDefault.setValue(index, forKey: "tappedColumn")
+//        userDefault.setValue(index, forKey: "tappedColumn")
     }
     func updateInfoViewData(index: Int) -> [Int] {
         let arrayAlias = ProjunitAliasname.allCases

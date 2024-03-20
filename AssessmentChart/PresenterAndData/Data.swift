@@ -78,9 +78,9 @@ struct Page: Codable {
     enum ProjStatus: String, Codable, CaseIterable {
         case uncontractedPj = "0"
         case contractingPj  = "10"
-        case completionPj   = "110"
+        case finishPj       = "110"
         case warrantyPj     = "130"
-        case finishPj       = "140"
+        case completionPj   = "140"
 
         var completeName: String {
             switch self {
@@ -88,11 +88,11 @@ struct Page: Codable {
                 return "工程狀態(為發包工程:尚未簽約的工程)(A5.6簽定訂約尚未完成)"
             case .contractingPj:
                 return "工程狀態(在建工程:申報竣工前的工程)(B3.4工程竣工未核定)"
-            case .completionPj:
+            case .finishPj:
                 return "工程狀態(完工驗收中工程:竣工驗收階段(含決算前))(B3.12缮製工程決算書核定前)"
             case .warrantyPj:
                 return "工程狀態(保固中工程:決算後)(B3.12缮製工程決算書核定後)"
-            case .finishPj:
+            case .completionPj:
                 return "工程狀態(結案(保固期滿):C發還保固(活)保證金)"
             }
         }
@@ -101,13 +101,13 @@ struct Page: Codable {
             case .uncontractedPj:
                 return UIColor.darkGray
             case .contractingPj:
-                return UIColor(red: 237/255, green: 168/255, blue: 0, alpha: 1.0)
-            case .completionPj:
+                return UIColor(red: 10/255, green: 191/255, blue: 129/255, alpha: 1.0)
+            case .finishPj:
                 return UIColor(red: 51/255, green: 108/255, blue: 251/255, alpha: 0.9)
             case .warrantyPj:
+                return UIColor(red: 237/255, green: 168/255, blue: 0, alpha: 1.0)
+            case .completionPj:
                 return UIColor(red: 1, green: 126/255, blue: 119/255, alpha: 1.0)
-            case .finishPj:
-                return UIColor(red: 10/255, green: 191/255, blue: 129/255, alpha: 1.0)
             }
         }
     }
