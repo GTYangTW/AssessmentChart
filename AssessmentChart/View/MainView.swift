@@ -48,6 +48,8 @@ class MainView: UIViewController {
     }()
     private var dictForChart: [String: [Int: Double]]!
     private let userDefault = UserDefaults()
+    private var lastLocation: CGPoint = CGPoint.zero
+    private var animator: UIViewPropertyAnimator?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -83,6 +85,8 @@ class MainView: UIViewController {
             make.top.equalToSuperview().inset(70)
         }
         mainScrollview.contentSize = CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width, height: 1000)
+        let gestureChart = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        barChart.addGestureRecognizer(gestureChart)
     }
     func setuplbTitle() {
         lbTitleChart.text = "工程標案依工程狀態統計"
@@ -210,6 +214,26 @@ class MainView: UIViewController {
             make.height.width.equalTo(frameWidth)
         }
         setupDataDateRange()
+    }
+    // Chart 手勢驅動下層 ScorllView 滑動
+    @objc func handlePan(_ sender: UIPanGestureRecognizer) {
+        let location = sender.location(in: mainScrollview)
+        switch sender.state {
+        case .began:
+            lastLocation = location
+        case .changed :
+            let deltaY = 1.02 * (location.y - lastLocation.y)
+            // 動畫 6Hz
+            let animator = UIViewPropertyAnimator(duration: (1 / 6), curve: .linear) {
+                let offsetY = self.mainScrollview.contentOffset.y - deltaY
+                self.mainScrollview.setContentOffset(CGPoint(x: 0, y: offsetY), animated: false)
+            }
+            animator.startAnimation()
+            self.animator = animator
+            lastLocation = location
+        default:
+            break
+        }
     }
     // TODO: 三元運算子修正
     /*
@@ -364,7 +388,7 @@ extension MainView: ChartViewDelegate{
         } else {
             updateInfoViewData(index: index)
         }
-//        userDefault.setValue(index, forKey: "tappedColumn")
+        userDefault.setValue(index, forKey: "tappedColumn")
     }
     func updateInfoViewData(index: Int) -> [Int] {
         let arrayAlias = ProjunitAliasname.allCases
