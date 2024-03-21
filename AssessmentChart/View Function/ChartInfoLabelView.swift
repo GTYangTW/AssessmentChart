@@ -23,16 +23,16 @@ class ChartInfoLabelView: UIView {
         return v
     }()
     let insetDistance: CGFloat = 15
-    init(frame: CGRect, intProjectCount: [Int], pointInChart: CGPoint){
+    init(frame: CGRect, intProjectCount: [Int], pointInChart: CGPoint, colors: [UIColor]){
         super.init(frame: frame)
-        self.setupChartInfo(intProjectCount: intProjectCount)
+        self.setupChartInfo(intProjectCount: intProjectCount, colors: colors)
         self.setupChartInfoIndex(pointInChart: pointInChart)
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    func setupChartInfo(intProjectCount: [Int]){
+    func setupChartInfo(intProjectCount: [Int], colors: [UIColor]){
         let arrayString = ["未發包工程:", "在建工程:", "完工驗收中工程:", "保固中工程:", "結案（保固期滿）:"]
         let arrayInt = intProjectCount.map { "共\($0)件" }
         
@@ -40,8 +40,8 @@ class ChartInfoLabelView: UIView {
         self.layer.borderColor = UIColor.gray.cgColor
         self.layer.cornerRadius = 10
         
-        let arrayLbTitle = stringToArray(strings: arrayString)
-        let arrayLbNumber = stringToArray(strings: arrayInt)
+        let arrayLbTitle = stringToArray(strings: arrayString, color: colors)
+        let arrayLbNumber = stringToArray(strings: arrayInt, color: colors)
         let svLb1 = createVerticalStackView(arrangedSubviews: arrayLbTitle, saping: 10, alignment: .trailing)
         let svLb2 = createVerticalStackView(arrangedSubviews: arrayLbNumber, saping: 10, alignment: .leading)
         let sv = createHorizontalStackView(arrangedSubviews: [svLb1, svLb2])
@@ -58,15 +58,17 @@ class ChartInfoLabelView: UIView {
             make.top.equalTo(self.snp.bottom)
             make.centerX.equalTo(pointInChart.x - insetDistance)
             make.width.equalTo(1)
-            make.height.equalTo(pointInChart.y - 5)
+            make.height.equalTo(300 - pointInChart.y)
         }
     }
     
-    func stringToArray(strings: [String]) -> [UILabel]{
+    func stringToArray(strings: [String], color: [UIColor]) -> [UILabel]{
         var arrayTemp = [UILabel]()
-        for string in strings{
+        for (index, string) in strings.enumerated(){
             let lbtemp = UILabel()
             lbtemp.text = string
+            lbtemp.font = UIFont.boldSystemFont(ofSize: 16)
+            lbtemp.textColor = color[index]
             lbtemp.numberOfLines = 1
             arrayTemp.append(lbtemp)
         }

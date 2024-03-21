@@ -379,7 +379,8 @@ extension MainView: ChartViewDelegate{
         guard let unwrappedEntry = chartView.data?.dataSets as? [BarChartDataSet] else { return }
         // 獲取點選位置，highlight 指示點選位置
         let gesture = UITapGestureRecognizer()
-        let pointInChart = CGPoint(x: highlight.xPx, y: highlight.yPx)
+        print(entry.y)
+        let pointInChart = CGPoint(x: highlight.xPx, y: entry.y)
         // Tapped column function
         //let index = unwrappedEntry.firstIndex(of: entry)
         let index = Int(entry.x)
@@ -418,7 +419,11 @@ extension MainView: ChartViewDelegate{
     
     func setupInfoView(intProjectCount: [Int], pointInChart: CGPoint) {
         let frameSize = CGRect(x: 0, y: 0, width: 360, height: 180)
-        let chartInfoLabelView = ChartInfoLabelView(frame: frameSize, intProjectCount: intProjectCount, pointInChart: pointInChart)
+        let colors =  Page.ProjStatus.allCases.map{ $0.color }
+        let chartInfoLabelView = ChartInfoLabelView(frame: frameSize,
+                                                    intProjectCount: intProjectCount,
+                                                    pointInChart: pointInChart,
+                                                    colors: colors)
         chartInfoLabelView.tag = 1
         viewChartInfo.addSubview(chartInfoLabelView)
         viewChartInfo.tag = 2
