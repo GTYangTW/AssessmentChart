@@ -265,8 +265,9 @@ class MainView: UIViewController {
                 let val3 = dictStatusCount[110] ?? 0
                 let val4 = dictStatusCount[130] ?? 0
                 let val5 = dictStatusCount[140] ?? 0
-                return BarChartDataEntry(x: Double(i),
+                let entry = BarChartDataEntry(x: Double(i),
                                          yValues: [val1, val2, val3, val4, val5])
+                return entry
             }
             let set = BarChartDataSet(entries: yVals, label: alias.rawValue)
             dataSets.append(set)
@@ -281,9 +282,13 @@ class MainView: UIViewController {
         barChart.data = data
         // 調整 bar width，從 barData 改
         guard barChart.barData != nil else { return }
-        barChart.barData?.barWidth = 0.1
+        barChart.barData?.barWidth = 0.5
         // 調整 x 座標的數量
         barChart.xAxis.labelCount = dictForChart.values.count
+        // bar 文字取消
+        barChart.data?.setValueTextColor(.clear)
+        // x Axis label
+        barChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: arrayAlias.map{ $0.rawValue })
     }
     func setupDataDateRange(){
         let dateFormatterMin = DateFormatter()
@@ -378,17 +383,17 @@ extension MainView: ChartViewDelegate{
         // Tapped column function
         //let index = unwrappedEntry.firstIndex(of: entry)
         let index = Int(entry.x)
-        print(index)
-        removeInfoView(chartView: chartView)
-
-        if index != userDefault.integer(forKey: "tappedColumn") {
-            updateChartViewConstraint()
-            let arrayInfoData = updateInfoViewData(index: index)
-            setupInfoView(intProjectCount: arrayInfoData, pointInChart: pointInChart)
+        if !userDefault.bool(forKey: "infoViewIsHidden") {
+            removeInfoView(chartView: chartView)
+                updateChartViewConstraint()
+                let arrayInfoData = updateInfoViewData(index: index)
+                setupInfoView(intProjectCount: arrayInfoData, pointInChart: pointInChart)
+                userDefault.setValue(false, forKey: "infoViewIsHidden")
         } else {
             updateInfoViewData(index: index)
         }
-        userDefault.setValue(index, forKey: "tappedColumn")
+        // tappedColumn 暫時沒使用
+        // userDefault.setValue(index, forKey: "tappedColumn")
     }
     func updateInfoViewData(index: Int) -> [Int] {
         let arrayAlias = ProjunitAliasname.allCases
