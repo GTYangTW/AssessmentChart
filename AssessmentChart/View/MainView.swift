@@ -277,18 +277,35 @@ class MainView: UIViewController {
                           Page.ProjStatus.warrantyPj.color,
                           Page.ProjStatus.completionPj.color]
             set.stackLabels = ProjunitAliasname.allCases.map{ $0.rawValue }
+            set.valueFormatter = SumValueFormatter()
         }
         let data = BarChartData(dataSets: dataSets)
         barChart.data = data
         // 調整 bar width，從 barData 改
-        guard barChart.barData != nil else { return }
+        guard barChart.data != nil else { return }
+        setupCornerRoundedCover(chart: barChart, data: barChart.data!)
         barChart.barData?.barWidth = 0.5
         // 調整 x 座標的數量
         barChart.xAxis.labelCount = dictForChart.values.count
         // bar 文字取消
-        barChart.data?.setValueTextColor(.clear)
+        //barChart.data?.setValueTextColor(.clear)
         // x Axis label
         barChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: arrayAlias.map{ $0.rawValue })
+    }
+    func setupCornerRoundedCover(chart: ChartViewBase, data: ChartData){
+        //guard let entry = chart.data?.dataSets as? [BarChartDataSet] else { return }
+        let point = CGPoint(x: data.xMax,
+                            y: data.yMax)
+//        for entry in data{
+//            let x = entry.yMax
+//            let y = entry.yMax
+//            let cover = RoundedTopBarView(frame: CGRect(x: x,
+//                                                        y: y,
+//                                                        width: 25,
+//                                                        height: 25),
+//                                          color: UIColor.red.cgColor)
+//            barChart.addSubview(cover)
+//        }
     }
     func setupDataDateRange(){
         let dateFormatterMin = DateFormatter()
@@ -338,7 +355,8 @@ class MainView: UIViewController {
             if tempDict.keys.contains(alias.rawValue){
                 tempDict[alias.rawValue]?[value ?? 0, default: 0] += 1
             } else {
-                tempDict[alias.rawValue] = [value ?? 0: 0]
+                // 第一次要設定為 1
+                tempDict[alias.rawValue] = [value ?? 0: 1]
             }
         }
         return tempDict

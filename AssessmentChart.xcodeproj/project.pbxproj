@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0C682BB82BAC078700A6DF5B /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 0C682BB72BAC078700A6DF5B /* DGCharts */; };
+		0C682BBC2BAD091900A6DF5B /* RoundedTopBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C682BBB2BAD091900A6DF5B /* RoundedTopBarView.swift */; };
+		0C682BBE2BAD563200A6DF5B /* SumValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C682BBD2BAD563200A6DF5B /* SumValueFormatter.swift */; };
 		0C9B597B2B8D92090019C558 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B597A2B8D92090019C558 /* AppDelegate.swift */; };
 		0C9B597D2B8D92090019C558 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B597C2B8D92090019C558 /* SceneDelegate.swift */; };
 		0C9B597F2B8D92090019C558 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B597E2B8D92090019C558 /* MainView.swift */; };
@@ -51,6 +53,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C682BBB2BAD091900A6DF5B /* RoundedTopBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedTopBarView.swift; sourceTree = "<group>"; };
+		0C682BBD2BAD563200A6DF5B /* SumValueFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SumValueFormatter.swift; sourceTree = "<group>"; };
 		0C9B59772B8D92090019C558 /* AssessmentChart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AssessmentChart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C9B597A2B8D92090019C558 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0C9B597C2B8D92090019C558 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -179,6 +183,8 @@
 				0CBF63C72B96ED6800CA02FF /* ColorReferance.swift */,
 				0CBF63D72B9EFFAD00CA02FF /* Labelarrangement.swift */,
 				0CBF63D92B9FD3C100CA02FF /* ChartInfoLabelView.swift */,
+				0C682BBB2BAD091900A6DF5B /* RoundedTopBarView.swift */,
+				0C682BBD2BAD563200A6DF5B /* SumValueFormatter.swift */,
 			);
 			path = "View Function";
 			sourceTree = "<group>";
@@ -340,6 +346,8 @@
 				0CBF63C52B95A86B00CA02FF /* LegendView.swift in Sources */,
 				0C9B59B92B906C900019C558 /* ColorBlockLegend.swift in Sources */,
 				0C9B59AB2B8DB23D0019C558 /* MainTBC.swift in Sources */,
+				0C682BBE2BAD563200A6DF5B /* SumValueFormatter.swift in Sources */,
+				0C682BBC2BAD091900A6DF5B /* RoundedTopBarView.swift in Sources */,
 				0CBF63CB2B9997C100CA02FF /* Presenter.swift in Sources */,
 				0C9B59B72B9059DD0019C558 /* ButtonUnderLine.swift in Sources */,
 				0CBF63CE2B9999DE00CA02FF /* Data.swift in Sources */,
